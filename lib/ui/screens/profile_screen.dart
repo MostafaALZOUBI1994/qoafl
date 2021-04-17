@@ -57,7 +57,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     CircleAvatar(
                       radius: 30.0,
-                      backgroundImage: NetworkImage(mediaUrl+kUser.userInfo.avatar),
+                      backgroundImage:kUser.userInfo.avatar==null ? AssetImage("assets/user.png")
+                          :NetworkImage(mediaUrl+kUser.userInfo.avatar),
                       backgroundColor: backColor,
                     ),
                     SizedBox(

@@ -16,14 +16,7 @@ import 'constants.dart';
 import "package:qawafel/repository/productRepo.dart";
 
 Future<void> main() async {
-  BuildContext context;
-  WidgetsFlutterBinding.ensureInitialized();
- await UserRepo(context).getUser();
- if(kUser !=null){
-
- }else{
-kUser=User(accessToken: "",userId: 0);
- }
+kUser=User();
   runApp(MultiBlocProvider(
     providers: [
       BlocProvider<TopcategoryBloc>(

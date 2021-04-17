@@ -61,12 +61,13 @@ class _MainScreenState extends State<MainScreen>
                           },
                           child:kUser==null?Container() :CircleAvatar(
                             radius: 30.0,
-                            backgroundImage: kUser.accessToken==""?AssetImage("assets/user.png"):NetworkImage(mediaUrl+kUser.userInfo.avatar),
+                            backgroundImage: kUser.accessToken==null || kUser.userInfo.avatar==null ? AssetImage("assets/user.png")
+                                :NetworkImage(mediaUrl+kUser.userInfo.avatar ,),
                             backgroundColor: backColor,
                           ),
                         ),
                         openBuilder: (BuildContext c, VoidCallback action) =>
-                        kUser.accessToken==""?   Signup_SigninScreen()
+                        kUser.accessToken==null?   Signup_SigninScreen()
                             :ProfileScreen(),
                         tappable: false,
                       ),

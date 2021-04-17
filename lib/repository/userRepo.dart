@@ -15,12 +15,17 @@ class UserRepo {
   final BuildContext context;
   User user;
   UserRepo(this.context);
-  Future<User> getUser() async {
+  Future<bool> getUser() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
+
       user = User(accessToken: prefs.get("token"), userId: prefs.get("userId"));
-      //await getUserProfile(user.accessToken, user.userId);
-      return user;
+      if(user == null) {
+return false;
+      }
+      else{
+      await getUserProfile(user.accessToken, user.userId);
+      return true;}
     } catch (ex) {
       print("getUser " + ex.toString());
     }
