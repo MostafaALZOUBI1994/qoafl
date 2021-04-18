@@ -151,7 +151,7 @@ class _WishListState extends State<WishList> {
                                                     .primaryColor),
                                           )
                                         ],
-                                      )
+                                      ),
                                     ],
                                   ),
                                 ),

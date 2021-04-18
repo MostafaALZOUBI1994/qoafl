@@ -34,6 +34,8 @@ class _ProductDetailState extends State<ProductDetail> {
   VideoPlayerController _controller;
   Future<void> _initializeVideoPlayerFuture;
 
+
+
   @override
   void initState() {
 
@@ -684,7 +686,11 @@ class _ProductDetailState extends State<ProductDetail> {
                           child: Row(
                             children: [
                               InkWell(
-                                onTap: () {},
+                                onTap: () async {
+                                  var variant=widget.product.stocks.isEmpty? "" :widget.product.stocks[0]["variant"] ;
+                                  await ProductRepo().addToCart(kUser.userId,widget.product.id,variant);
+                                  showSnackBar(context, "The Product added to cart");
+                                },
                                 child: Container(
                                   width: ScreenUtil().setWidth(87),
                                   decoration: BoxDecoration(
