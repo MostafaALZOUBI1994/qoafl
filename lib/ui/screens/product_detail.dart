@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/screen_util.dart';
 import 'package:like_button/like_button.dart';
+import 'package:qawafel/bloc/quantity_bloc/quantity_bloc.dart';
+import 'package:qawafel/bloc/quantity_bloc/quantity_event.dart';
+import 'package:qawafel/bloc/quantity_bloc/quantity_state.dart';
 import 'package:qawafel/constants.dart';
 import "package:flutter_rating_bar/flutter_rating_bar.dart";
+import 'package:qawafel/ui/widgets/quantity_widget.dart';
 import 'package:qawafel/ui/widgets/related.dart';
 import 'package:qawafel/ui/widgets/snakbar.dart';
 import 'package:qawafel/ui/widgets/video_widget.dart';
@@ -26,7 +31,6 @@ class _ProductDetailState extends State<ProductDetail> {
   int selectedPhoto = 0;
   int selectedDetail = 0;
   bool _onFirstPage = true;
-  int quantity = 1;
   bool isLiked=false;
   VideoPlayerController _controller;
   Future<void> _initializeVideoPlayerFuture;
@@ -56,6 +60,7 @@ class _ProductDetailState extends State<ProductDetail> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -399,6 +404,7 @@ class _ProductDetailState extends State<ProductDetail> {
   }
 
   pageViewContent() {
+    final QuantityBloc quantityBloc = BlocProvider.of<QuantityBloc>(context);
     switch (selectedDetail) {
       case 0:
         return Container(
@@ -582,87 +588,7 @@ class _ProductDetailState extends State<ProductDetail> {
                           top: ScreenUtil().setHeight(11),
                           left: ScreenUtil().setWidth(14),
                         ),
-                        child: Row(
-                          children: [
-                            InkWell(
-                                onTap: () {
-                                  quantity == 1
-                                      ? () {}
-                                      : setState(() {
-                                          quantity--;
-                                        });
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(
-                                        Radius.elliptical(9999.0, 9999.0)),
-                                    color: const Color(0xffffffff),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: const Color(0x19000000),
-                                        offset: Offset(0, 0),
-                                        blurRadius: 6,
-                                      ),
-                                    ],
-                                  ),
-                                  child: Icon(Icons.remove),
-                                )),
-                            SizedBox(
-                              width: ScreenUtil().setWidth(15),
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5.0),
-                                color: const Color(0xffffffff),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: const Color(0x19000000),
-                                    offset: Offset(0, 0),
-                                    blurRadius: 6,
-                                  ),
-                                ],
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 22.0, vertical: 4),
-                                child: Text(quantity.toString()),
-                              ),
-                            ),
-                            SizedBox(
-                              width: ScreenUtil().setWidth(15),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  quantity++;
-                                });
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(
-                                      Radius.elliptical(9999.0, 9999.0)),
-                                  color: const Color(0xffffffff),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: const Color(0x19000000),
-                                      offset: Offset(0, 0),
-                                      blurRadius: 6,
-                                    ),
-                                  ],
-                                ),
-                                child: Icon(Icons.add),
-                              ),
-                            ),
-                            SizedBox(
-                              width: ScreenUtil().setWidth(80),
-                            ),
-                            Text(
-                              (quantity * widget.product.priceLower).toString(),
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColor),
-                            )
-                          ],
-                        ),
+                        child: QuantityWidget(priceLower: widget.product.priceLower,)
                       ),
                       Padding(
                           padding: EdgeInsets.only(

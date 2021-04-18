@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/screenutil_init.dart';
 import 'package:qawafel/bloc/AllCategory_bloc/all_category_bloc.dart';
+import 'package:qawafel/bloc/quantity_bloc/quantity_bloc.dart';
 import 'package:qawafel/bloc/topBrand_bloc/top_brand_bloc.dart';
 import 'package:qawafel/bloc/topCategory_bloc/bloc/topcategory_bloc.dart';
 import 'package:qawafel/models/user.dart';
@@ -38,7 +39,8 @@ kUser=User();
       BlocProvider<ProductBloc>(
         create: (BuildContext context) =>
             ProductBloc(ProductInitial(), ProductRepo()),
-      )
+      ),
+      BlocProvider<QuantityBloc>(create: (BuildContext context)=>QuantityBloc())
     ],
     child: MaterialApp(
       home: MyApp(),
