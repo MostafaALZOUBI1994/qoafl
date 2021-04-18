@@ -10,10 +10,8 @@ class QuantityBloc extends Bloc<QuantityEvent, QuantityState> {
   Stream<QuantityState> mapEventToState(QuantityEvent event) async* {
 
     if (event is IncrementEvent) {
-
       yield QuantityState(quantity: state.quantity + 1);
     } else if (event is DecrementEvent) {
-
       yield QuantityState(quantity: state.quantity - 1);
     }
   }

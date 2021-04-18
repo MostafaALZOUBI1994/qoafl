@@ -638,9 +638,8 @@ class _ProductDetailState extends State<ProductDetail> {
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    setState(() {
                                       quantityBloc.add(IncrementEvent());
-                                    });
+
                                   },
                                   child: Container(
                                     decoration: BoxDecoration(
