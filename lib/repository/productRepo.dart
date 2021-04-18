@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:path/path.dart';
 import 'package:qawafel/models/item_in_cart.dart';
+import 'package:qawafel/models/item_in_wishlist.dart';
 import 'package:qawafel/ui/widgets/snakbar.dart';
 import '../models/product.dart';
 import 'package:http/http.dart' as http;
@@ -215,8 +216,8 @@ class ProductRepo {
     }
   }
 
-  Future<List<Product>> getWishList(String UserId) async {
-    List<Product> products = [];
+  Future<List<ItemInWishList>> getWishList(String UserId) async {
+    List<ItemInWishList> products = [];
     try {
       var customHeaders = {
         'Authorization': 'Bearer $accessToken'
@@ -225,7 +226,7 @@ class ProductRepo {
       response = await dio.get(baseUrl + "/wishlists/$UserId",
           options: Options(headers: customHeaders));
       response.data["data"].map((product) {
-        products.add(Product.fromJson(product["product"]));
+        products.add(ItemInWishList.fromJson(product));
       }).toList();
     } catch (ex) {
       print("get wish list " + ex);

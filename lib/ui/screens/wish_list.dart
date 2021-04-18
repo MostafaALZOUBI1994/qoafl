@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/screen_util.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:like_button/like_button.dart';
 import 'package:qawafel/constants.dart';
 import 'package:qawafel/models/product.dart';
 import 'package:qawafel/repository/productRepo.dart';
 import 'package:qawafel/ui/screens/product_detail.dart';
+import 'package:qawafel/ui/widgets/snakbar.dart';
 
 class WishList extends StatefulWidget {
   @override
@@ -86,7 +88,7 @@ class _WishListState extends State<WishList> {
                                         child: CachedNetworkImage(
                                           imageUrl: mediaUrl +
                                               productSnap
-                                                  .data[index].thumbnailImage,
+                                                  .data[index].product.thumbnailImage,
                                           placeholder: (context, url) => Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: Center(
@@ -104,7 +106,7 @@ class _WishListState extends State<WishList> {
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 8.0),
                                         child: Text(
-                                          productSnap.data[index].name,
+                                          productSnap.data[index].product.name,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                               fontSize: ScreenUtil().setSp(14)),
@@ -122,7 +124,7 @@ class _WishListState extends State<WishList> {
                                             width: ScreenUtil().setWidth(8),
                                           ),
                                           RatingBarIndicator(
-                                            rating: productSnap.data[index].rating
+                                            rating: productSnap.data[index].product.rating
                                                 .toDouble(),
                                             itemBuilder: (context, index) => Icon(
                                               Icons.star,
@@ -143,7 +145,7 @@ class _WishListState extends State<WishList> {
                                             width: ScreenUtil().setWidth(8),
                                           ),
                                           Text(
-                                            productSnap.data[index].basePrice
+                                            productSnap.data[index].product.basePrice
                                                 .toString(),
                                             style: TextStyle(
                                                 fontSize: ScreenUtil().setSp(14),
@@ -151,6 +153,25 @@ class _WishListState extends State<WishList> {
                                                     .primaryColor),
                                           )
                                         ],
+                                      ),
+                                      LikeButton(
+
+                                          onTap:(nothing) async {
+
+
+                                              await ProductRepo().removeFromWishList( productSnap.data[index].id);
+                                              showSnackBar(context, "The Product removed from Favourites");
+
+
+                                            setState(() {
+
+                                            });
+
+                                          },
+                                          circleColor: CircleColor(
+                                              start: Theme.of(context).primaryColor,
+                                              end: Theme.of(context).accentColor), isLiked: true
+
                                       ),
                                     ],
                                   ),
