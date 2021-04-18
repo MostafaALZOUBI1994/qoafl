@@ -79,7 +79,7 @@ return false;
         'password': password,
         "passowrd_confirmation": confirmPassword
       });
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         showSnackBar(context, "SignUp Success Please SignIn");
         return true;
       }

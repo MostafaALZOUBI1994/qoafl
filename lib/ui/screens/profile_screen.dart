@@ -26,7 +26,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             "Profile",
             style: TextStyle(color: Colors.black),
           ),
-          leading: IconButton(onPressed: (){Navigator.pop(context);},icon: Icon(
+          leading: IconButton(onPressed: (){Navigator.pop(context);
+          setState(() {
+
+          });},icon: Icon(
               Icons.arrow_back,
               color: Colors.black,
             ),
@@ -89,7 +92,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     await  uploadFileFromDio(_image);
                      await UserRepo(context).getUserProfile(kUser.accessToken,kUser.userId);
                      setState(() {
-
                      });
                     },child: Padding(
                   padding: EdgeInsets.symmetric(
@@ -115,7 +117,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   height: ScreenUtil().setHeight(30),
                 ),
                 InkWell(onTap: 
-                  (){Navigator.push(context, MaterialPageRoute(builder: (context)=>SearchScreen()));},child: Padding(
+                  (){},child: Padding(
                     padding: EdgeInsets.symmetric(
                         horizontal: ScreenUtil().setWidth(11)),
                     child: Container(
@@ -185,6 +187,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 InkWell(onTap: () async {
     bool signOut=await UserRepo(context).signOut();
     signOut?Navigator.pop(context):(){};
+
                 },
                   child: Padding(
                     padding: EdgeInsets.symmetric(
