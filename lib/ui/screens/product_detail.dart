@@ -8,7 +8,6 @@ import 'package:qawafel/bloc/quantity_bloc/quantity_event.dart';
 import 'package:qawafel/bloc/quantity_bloc/quantity_state.dart';
 import 'package:qawafel/constants.dart';
 import "package:flutter_rating_bar/flutter_rating_bar.dart";
-import 'package:qawafel/ui/widgets/quantity_widget.dart';
 import 'package:qawafel/ui/widgets/related.dart';
 import 'package:qawafel/ui/widgets/snakbar.dart';
 import 'package:qawafel/ui/widgets/video_widget.dart';
@@ -588,7 +587,89 @@ class _ProductDetailState extends State<ProductDetail> {
                           top: ScreenUtil().setHeight(11),
                           left: ScreenUtil().setWidth(14),
                         ),
-                        child: QuantityWidget(priceLower: widget.product.priceLower,)
+                        child: BlocBuilder<QuantityBloc,QuantityState>(
+                          builder: (context,state){
+                            return Row(
+                              children: [
+                                InkWell(
+                                    onTap: () {
+                                      state.quantity == 1
+                                          ? () {}
+                                          :quantityBloc.add(DecrementEvent());
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.elliptical(9999.0, 9999.0)),
+                                        color: const Color(0xffffffff),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: const Color(0x19000000),
+                                            offset: Offset(0, 0),
+                                            blurRadius: 6,
+                                          ),
+                                        ],
+                                      ),
+                                      child: Icon(Icons.remove),
+                                    )),
+                                SizedBox(
+                                  width: ScreenUtil().setWidth(15),
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    color: const Color(0xffffffff),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: const Color(0x19000000),
+                                        offset: Offset(0, 0),
+                                        blurRadius: 6,
+                                      ),
+                                    ],
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 22.0, vertical: 4),
+                                    child: Text(state.quantity.toString()),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: ScreenUtil().setWidth(15),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      quantityBloc.add(IncrementEvent());
+                                    });
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.elliptical(9999.0, 9999.0)),
+                                      color: const Color(0xffffffff),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: const Color(0x19000000),
+                                          offset: Offset(0, 0),
+                                          blurRadius: 6,
+                                        ),
+                                      ],
+                                    ),
+                                    child: Icon(Icons.add),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: ScreenUtil().setWidth(80),
+                                ),
+                                Text(
+                                  (state.quantity * widget.product.priceLower).toString(),
+                                  style: TextStyle(
+                                      color: Theme.of(context).primaryColor),
+                                )
+                              ],
+                            );
+                          },
+                        )
                       ),
                       Padding(
                           padding: EdgeInsets.only(
