@@ -189,7 +189,7 @@ class ProductRepo {
 
   Future<Product> getProductDetails(int productId,int userId) async {
     try {
-      var url = Uri.parse(productUrl + "products/$productId");
+      var url = Uri.parse(productUrl + "products/$productId/$userId");
       var response = await http.get(url);
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -201,7 +201,7 @@ class ProductRepo {
     }
   }
 
-  Future<Product> getProductDetailsByUrl(String link) async {
+  Future<Product> getProductDetailsByUrl(String link,int userId) async {
     try {
       var url = Uri.parse(link);
       var response = await http.get(url);
@@ -282,14 +282,14 @@ class ProductRepo {
     }
   }
 
-  Future addToCart(int userId, int productId) async {
+  Future addToCart(int userId, int productId,var variant) async {
     try {
       response = await dio.post(baseUrl + "/carts/add",
           options: Options(headers: {"Authorization": 'Bearer $accessToken'}),
           data: {
             "id": productId,
             "user_id": userId,
-            "variant": "Aqua-صغير",
+            "variant": variant,
             "color": ""
           });
 

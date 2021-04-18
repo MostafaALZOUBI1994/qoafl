@@ -34,10 +34,10 @@ class _ClassifeidListState extends State<ClassifeidList> {
                         horizontal: ScreenUtil().setWidth(10),vertical: ScreenUtil().setHeight(10)),
                     child: InkWell(
                       onTap: () async {
-                        Product relatedProduct= await ProductRepo().getProductDetails(product.id,kUser.userId);
+                        Product productDetails= await ProductRepo().getProductDetailsByUrl(product.links.details,kUser.userId);
                         Navigator.push (
                           context,
-                          MaterialPageRoute(builder: (context) => ProductDetail(product: relatedProduct,)),
+                          MaterialPageRoute(builder: (context) => ProductDetail(product: productDetails,)),
                         );
                       },
                       child: Container(

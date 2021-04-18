@@ -20,12 +20,12 @@ class UserRepo {
       SharedPreferences prefs = await SharedPreferences.getInstance();
 
       user = User(accessToken: prefs.get("token"), userId: prefs.get("userId"));
-      if(user == null) {
-return false;
+      if (user == null) {
+        return false;
+      } else {
+        await getUserProfile(user.accessToken, user.userId);
+        return true;
       }
-      else{
-      await getUserProfile(user.accessToken, user.userId);
-      return true;}
     } catch (ex) {
       print("getUser " + ex.toString());
     }
@@ -143,16 +143,20 @@ return false;
     print(response.data);
   }
 
-  Future removeAddresss(int addressId,String accessToken) async {try{
-    var customHeaders = {
-      'Authorization': 'Bearer $accessToken'
-      // other headers
-    };
-     response=  await dio.get(baseUrl+"/user/shipping/delete/$addressId",options: Options(headers:customHeaders)
-     );
-print(response.data);
-  }catch(ex){print("remove addres "+ex.toString());}}
-  
+  Future removeAddresss(int addressId, String accessToken) async {
+    try {
+      var customHeaders = {
+        'Authorization': 'Bearer $accessToken'
+        // other headers
+      };
+      response = await dio.get(baseUrl + "/user/shipping/delete/$addressId",
+          options: Options(headers: customHeaders));
+      print(response.data);
+    } catch (ex) {
+      print("remove addres " + ex.toString());
+    }
+  }
+
   Future<String> inVoice(int userId) async {
     try {
       response = await dio.get(baseUrl + "/payments/invoice/$userId");

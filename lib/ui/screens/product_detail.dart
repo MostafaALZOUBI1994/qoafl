@@ -192,24 +192,30 @@ class _ProductDetailState extends State<ProductDetail> {
                                         selectedPhoto = index;
                                       });
                                     },
-                                    child: Container(
-                                      width: ScreenUtil().setWidth(62),
-                                      height: ScreenUtil().setWidth(62),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(
-                                            ScreenUtil().setWidth(9.2)),
-                                        border: Border.all(
-                                            width: 1.0,
-                                            color: index == selectedPhoto
-                                                ? Theme.of(context).primaryColor
-                                                : Color(0xff707070)),
-                                      ),
-                                      child: CachedNetworkImage(
-                                        imageUrl: mediaUrl +
-                                            widget.product.photos[index],
-                                        placeholder: (context, url) => Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: CircularProgressIndicator(),
+                                    child: Padding(
+                                      padding:  EdgeInsets.symmetric(horizontal:8.0),
+                                      child: Container(
+                                        width: ScreenUtil().setWidth(62),
+                                        height: ScreenUtil().setWidth(62),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(
+                                              ScreenUtil().setWidth(9.2)),
+                                          border: Border.all(
+                                              width: 1.0,
+                                              color: index == selectedPhoto
+                                                  ? Theme.of(context).primaryColor
+                                                  : Color(0xff707070)),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(3.0),
+                                          child: CachedNetworkImage(
+                                            imageUrl: mediaUrl +
+                                                widget.product.photos[index],
+                                            placeholder: (context, url) => Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: CircularProgressIndicator(),
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -714,8 +720,8 @@ class _ProductDetailState extends State<ProductDetail> {
                               ),
                               InkWell(
                                 onTap: () async {
-                                  //TODO add to cart
-                                  await ProductRepo().addToCart(kUser.userId,widget.product.id);
+                                 var variant=widget.product.stocks.isEmpty? "" :widget.product.stocks[0]["variant"] ;
+                                  await ProductRepo().addToCart(kUser.userId,widget.product.id,variant);
                                   showSnackBar(context, "The Product added to cart");
                                 },
                                 child: Container(

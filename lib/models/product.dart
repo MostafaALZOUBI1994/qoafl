@@ -12,8 +12,8 @@ class Product {
   List<dynamic> photos;
   String thumbnailImage;
   List<String> tags;
-  int priceLower;
-  int priceHigher;
+  var priceLower;
+  var priceHigher;
   //List<Null> choiceOptions;
   //Null colors;
   int currentStock;
@@ -37,8 +37,9 @@ class Product {
   int ratingCount;
   String description;
   String image;
-  bool isExistInCart;
-  bool isExistInWishList;
+  List isExistInCart;
+  List isExistInWishList;
+  List stocks;
   Product({
     this.id,
     this.name,
@@ -72,10 +73,10 @@ class Product {
     this.video,
     this.isExistInCart,
     this.isExistInWishList,
-    this.unit
+    this.unit,this.stocks,
     //   this.choiceOptions,
     // this.colors,
-    ,
+
     // this.unit,
   });
 
@@ -115,6 +116,7 @@ class Product {
     isExistInWishList = json["is_wishlist"];
     isExistInCart = json["is_cart"];
     image = json['image'];
+    stocks= json["stocks"];
     /*
     if (json['choice_options'] != null) {
       choiceOptions = new List<Null>();

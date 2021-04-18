@@ -14,9 +14,6 @@ class SplashScreen extends StatelessWidget {
       animationEffect: 'zoom-in',
       logoSize: 200,
       home: MainScreen(),
-      customFunction: () async {
-        await UserRepo(context).getUser();
-      },
       duration: 2500,
       type: CustomSplashType.StaticDuration,
 
