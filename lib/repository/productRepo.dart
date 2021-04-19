@@ -204,7 +204,7 @@ class ProductRepo {
 
   Future<Product> getProductDetailsByUrl(String link,int userId) async {
     try {
-      var url = Uri.parse(link);
+      var url = Uri.parse(link+"/$userId");
       var response = await http.get(url);
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -212,7 +212,7 @@ class ProductRepo {
         return Product.fromJson(product);
       }
     } catch (ex) {
-      print(ex.toString());
+      print("get Product Detail by url"+ex.toString());
     }
   }
 

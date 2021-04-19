@@ -34,6 +34,7 @@ class _ClassifeidListState extends State<ClassifeidList> {
                         horizontal: ScreenUtil().setWidth(10),vertical: ScreenUtil().setHeight(10)),
                     child: InkWell(
                       onTap: () async {
+                        //TODO user id
                         Product productDetails= await ProductRepo().getProductDetailsByUrl(product.links.details,kUser.userId);
                         Navigator.push (
                           context,
