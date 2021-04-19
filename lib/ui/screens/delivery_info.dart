@@ -84,9 +84,7 @@ class _DeliveryInfoState extends State<DeliveryInfo> {
                                                               Expanded(
                                                                 child: Text(
                                                                  snapshot.data[index].product.name,
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
+
                                                                 ),
                                                               ),
                                                             ],
