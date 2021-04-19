@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -17,11 +18,24 @@ class PaymentScreen extends StatefulWidget {
 
 class _PaymentScreenState extends State<PaymentScreen> {
   String url;
+  final Completer<WebViewController> _controller =
+  Completer<WebViewController>();
+
   @override
   void initState() {
     super.initState();
     // Enable hybrid composition.
     if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
+  }
+  JavascriptChannel _toasterJavascriptChannel(BuildContext context) {
+    return JavascriptChannel(
+        name: 'Toaster',
+        onMessageReceived: (JavascriptMessage message) {
+          // ignore: deprecated_member_use
+          Scaffold.of(context).showSnackBar(
+            SnackBar(content: Text(message.message)),
+          );
+        });
   }
   @override
   Widget build(BuildContext context) {
@@ -32,8 +46,31 @@ class _PaymentScreenState extends State<PaymentScreen> {
         children: [
           url==null?Container():
           Container(height: ScreenUtil().setHeight(500),
-            child: WebView(
+            child:  WebView(
               initialUrl: url,
+              javascriptMode: JavascriptMode.unrestricted,
+              onWebViewCreated: (WebViewController webViewController) {
+                _controller.complete(webViewController);
+              },
+             debuggingEnabled: true,
+              javascriptChannels: <JavascriptChannel>{
+                _toasterJavascriptChannel(context),
+              },
+              navigationDelegate: (NavigationRequest request) {
+                if (request.url.startsWith('https://www.youtube.com/')) {
+                  print('blocking navigation to $request}');
+                  return NavigationDecision.prevent;
+                }
+                print('allowing navigation to $request');
+                return NavigationDecision.navigate;
+              },
+              onPageStarted: (String url) {
+                print('Page started loading: $url');
+              },
+              onPageFinished: (String url) {
+                print('Page finished loading: $url');
+              },
+              gestureNavigationEnabled: true,
             )
           ),
           /*
@@ -89,9 +126,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     () async {
 
                  url=await  UserRepo(context).inVoice(kUser.userId);
-               setState(() {
 
-               });
                     }),
           ),
           SizedBox(

@@ -32,7 +32,6 @@ class _WishListState extends State<WishList> {
                   child: GridView.count(
                     shrinkWrap: true,
                     scrollDirection: Axis.vertical,
-                    physics: NeverScrollableScrollPhysics(),
                     crossAxisCount: 2,
                     crossAxisSpacing: 5,
                     mainAxisSpacing: 10,
