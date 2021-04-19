@@ -52,16 +52,7 @@ class _WishListState extends State<WishList> {
                               ),
                               child: InkWell(
                                 onTap: () async {
-                                  Product product = await ProductRepo()
-                                      .getProductDetailsByUrl(
-                                          productSnap.data[index].links.details,kUser.userId);
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => ProductDetail(
-                                              product: product,
-                                            )),
-                                  );
+
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(

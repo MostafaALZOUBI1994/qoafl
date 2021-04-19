@@ -19,7 +19,7 @@ class Product {
   int currentStock;
   //Null unit;
   var basePrice;
-  int baseDiscountedPrice;
+  var baseDiscountedPrice;
   int todaysDeal;
   int featured;
   String unit;
