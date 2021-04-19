@@ -12,9 +12,7 @@ import 'package:qawafel/repository/categoryRepo.dart';
 import 'package:qawafel/repository/userRepo.dart';
 import 'package:qawafel/ui/screens/main_screen.dart';
 import 'package:qawafel/bloc/Product_bloc/product_bloc.dart';
-import 'package:qawafel/ui/splash_screen.dart';
 import 'bloc/AllBrand_bloc/all_brand_bloc.dart';
-import 'constants.dart';
 import "package:qawafel/repository/productRepo.dart";
 
 Future<void> main() async {
@@ -65,7 +63,7 @@ class MyApp extends StatelessWidget {
             visualDensity: VisualDensity.adaptivePlatformDensity,
             primaryColor: Color.fromRGBO(241, 106, 41, 1.0),
             accentColor: Color.fromRGBO(254, 201, 13, 1.0)),
-        home: SplashScreen(),
+        home: MainScreen(),
       ),
     );
   }

@@ -19,7 +19,7 @@ class _WishListState extends State<WishList> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding:  EdgeInsets.only(top:ScreenUtil().setHeight(20)),
+      padding: EdgeInsets.only(top: ScreenUtil().setHeight(20)),
       child: FutureBuilder(
         future: ProductRepo().getWishList(kUser.userId.toString()),
         builder: (context, productSnap) {
@@ -51,9 +51,7 @@ class _WishListState extends State<WishList> {
                                 horizontal: ScreenUtil().setWidth(18),
                               ),
                               child: InkWell(
-                                onTap: () async {
-
-                                },
+                                onTap: () async {},
                                 child: Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(6.0),
@@ -78,9 +76,10 @@ class _WishListState extends State<WishList> {
                                         height: ScreenUtil().setHeight(87),
                                         child: CachedNetworkImage(
                                           imageUrl: mediaUrl +
-                                              productSnap
-                                                  .data[index].product.thumbnailImage,
-                                          placeholder: (context, url) => Padding(
+                                              productSnap.data[index].product
+                                                  .thumbnailImage,
+                                          placeholder: (context, url) =>
+                                              Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: Center(
                                                 child:
@@ -115,9 +114,11 @@ class _WishListState extends State<WishList> {
                                             width: ScreenUtil().setWidth(8),
                                           ),
                                           RatingBarIndicator(
-                                            rating: productSnap.data[index].product.rating
+                                            rating: productSnap
+                                                .data[index].product.rating
                                                 .toDouble(),
-                                            itemBuilder: (context, index) => Icon(
+                                            itemBuilder: (context, index) =>
+                                                Icon(
                                               Icons.star,
                                               color: Colors.amber,
                                             ),
@@ -136,34 +137,33 @@ class _WishListState extends State<WishList> {
                                             width: ScreenUtil().setWidth(8),
                                           ),
                                           Text(
-                                            productSnap.data[index].product.basePrice
+                                            productSnap
+                                                .data[index].product.basePrice
                                                 .toString(),
                                             style: TextStyle(
-                                                fontSize: ScreenUtil().setSp(14),
+                                                fontSize:
+                                                    ScreenUtil().setSp(14),
                                                 color: Theme.of(context)
                                                     .primaryColor),
                                           )
                                         ],
                                       ),
                                       LikeButton(
+                                          onTap: (nothing) async {
+                                            await ProductRepo()
+                                                .removeFromWishList(
+                                                    productSnap.data[index].id);
+                                            showSnackBar(context,
+                                                "The Product removed from Favourites");
 
-                                          onTap:(nothing) async {
-
-
-                                              await ProductRepo().removeFromWishList( productSnap.data[index].id);
-                                              showSnackBar(context, "The Product removed from Favourites");
-
-
-                                            setState(() {
-
-                                            });
-
+                                            setState(() {});
                                           },
                                           circleColor: CircleColor(
-                                              start: Theme.of(context).primaryColor,
-                                              end: Theme.of(context).accentColor), isLiked: true
-
-                                      ),
+                                              start: Theme.of(context)
+                                                  .primaryColor,
+                                              end: Theme.of(context)
+                                                  .accentColor),
+                                          isLiked: true),
                                     ],
                                   ),
                                 ),

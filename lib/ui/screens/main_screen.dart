@@ -22,108 +22,134 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen>
     with SingleTickerProviderStateMixin {
   TabController _tabController;
+  double topPosition=ScreenUtil().setHeight(450);
+  double leftPosition=ScreenUtil().setWidth(150);
+  double mainScreenOpacity=0.0;
 
+
+  animationfunc(){
+    setState(() {
+      topPosition=ScreenUtil().setHeight(10);
+      leftPosition=ScreenUtil().setWidth(10);
+    });
+    Future.delayed(Duration(milliseconds: 3500)).then((value) => {
+      setState(()
+      {
+        mainScreenOpacity=1.0;
+      })
+    });
+  }
   @override
   void initState() {
     _tabController = new TabController(length: 4, vsync: this);
+    Future.delayed(Duration(milliseconds: 100)).then((value) => {
+      animationfunc()
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 4,
-      child: Scaffold(
-        backgroundColor: backColor,
-        appBar: AppBar(
-            toolbarHeight: ScreenUtil().setHeight(113),
-            backgroundColor: Colors.white,
-            elevation: 0,
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Image.asset(
-                  "assets/LogoMV.png",
-                ),
-                Container(
-                  child: Row(
+    return Stack(
+      children: [
+        AnimatedOpacity(opacity: mainScreenOpacity,duration:Duration(milliseconds: 3500),
+          child: DefaultTabController(
+            length: 4,
+            child: Scaffold(
+              backgroundColor: backColor,
+              appBar: AppBar(
+                  toolbarHeight: ScreenUtil().setHeight(113),
+                  backgroundColor: Colors.white,
+                  elevation: 0,
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      OpenContainer(
-                        closedElevation: 0,
-                        openColor: backColor,
-                        transitionType: ContainerTransitionType.fadeThrough,
-                        transitionDuration: Duration(milliseconds: 500),
-                        closedBuilder: (BuildContext c, VoidCallback action) =>
-                            InkWell(
-                          onTap: () async {
-                            //ProductRepo().ad();
-                            action();
-                          },
-                          child:kUser==null?Container() :CircleAvatar(
-                            radius: 30.0,
-                            backgroundImage: kUser.accessToken==null || kUser.userInfo.avatar==null ? AssetImage("assets/user.png")
-                                :NetworkImage(mediaUrl+kUser.userInfo.avatar ,),
-                            backgroundColor: backColor,
-                          ),
+
+                      Container(
+                        child: Row(
+                          children: [
+                            OpenContainer(
+                              closedElevation: 0,
+                              openColor: backColor,
+                              transitionType: ContainerTransitionType.fadeThrough,
+                              transitionDuration: Duration(milliseconds: 500),
+                              closedBuilder: (BuildContext c, VoidCallback action) =>
+                                  InkWell(
+                                    onTap: () async {
+                                      //ProductRepo().ad();
+                                      action();
+                                    },
+                                    child:kUser==null?Container() :CircleAvatar(
+                                      radius: 30.0,
+                                      backgroundImage: kUser.accessToken==null || kUser.userInfo.avatar==null ? AssetImage("assets/user.png")
+                                          :NetworkImage(mediaUrl+kUser.userInfo.avatar ,),
+                                      backgroundColor: backColor,
+                                    ),
+                                  ),
+                              openBuilder: (BuildContext c, VoidCallback action) =>
+                              kUser.accessToken==null?   Signup_SigninScreen()
+                                  :ProfileScreen(),
+                              tappable: false,
+                            ),
+                            SizedBox(width: ScreenUtil().setWidth(3),),
+                            OpenContainer(closedElevation: 0,
+                              openColor: backColor,
+                              transitionType: ContainerTransitionType.fade,
+                              transitionDuration: Duration(milliseconds: 500),
+                              closedBuilder: (BuildContext c, VoidCallback openSearchScreen) =>
+                                  IconButton(
+                                      icon: Icon(
+                                        Icons.search,
+                                        color: grey,
+                                      ),
+                                      onPressed:() {
+                                        openSearchScreen();
+                                      }),
+                              openBuilder: (BuildContext c, VoidCallback action) =>
+                                  SearchScreen(),
+                            )
+                          ],
                         ),
-                        openBuilder: (BuildContext c, VoidCallback action) =>
-                        kUser.accessToken==null?   Signup_SigninScreen()
-                            :ProfileScreen(),
-                        tappable: false,
-                      ),
-                      SizedBox(width: ScreenUtil().setWidth(3),),
-                      OpenContainer(closedElevation: 0,
-                        openColor: backColor,
-                        transitionType: ContainerTransitionType.fade,
-                        transitionDuration: Duration(milliseconds: 500),
-                        closedBuilder: (BuildContext c, VoidCallback openSearchScreen) =>
-                            IconButton(
-                                icon: Icon(
-                                  Icons.search,
-                                  color: grey,
-                                ),
-                                onPressed:() {
-                                  openSearchScreen();
-                                }),
-                        openBuilder: (BuildContext c, VoidCallback action) =>
-                            SearchScreen(),
                       )
                     ],
                   ),
-                )
-              ],
-            ),
-            bottom: TabBar(
-              indicatorColor: Theme.of(context).primaryColor,
-              indicatorSize: TabBarIndicatorSize.label,
-              unselectedLabelColor: grey,
-              labelColor: Theme.of(context).primaryColor,
-              tabs: [
-                new Tab(icon: new Icon(Icons.home)),
-                new Tab(
-                  icon: new Icon(MyFlutterApp.category),
-                ),
-                new Tab(
-                  icon: new Icon(Icons.shopping_cart_outlined),
-                ),
+                  bottom: TabBar(
+                    indicatorColor: Theme.of(context).primaryColor,
+                    indicatorSize: TabBarIndicatorSize.label,
+                    unselectedLabelColor: grey,
+                    labelColor: Theme.of(context).primaryColor,
+                    tabs: [
+                      new Tab(icon: new Icon(Icons.home)),
+                      new Tab(
+                        icon: new Icon(MyFlutterApp.category),
+                      ),
+                      new Tab(
+                        icon: new Icon(Icons.shopping_cart_outlined),
+                      ),
 
-                new Tab(
-                  icon: new Icon(MaterialIcons.favorite_border),
-                ),
-              ],
-              controller: _tabController,
-            )),
-        body: TabBarView(
-          children: [
-            HomeScreen(controller: _tabController,),
-            CategoryBrand(),
-            MyCart(),
-            WishList(),
-          ],
-          controller: _tabController,
+                      new Tab(
+                        icon: new Icon(MaterialIcons.favorite_border),
+                      ),
+                    ],
+                    controller: _tabController,
+                  )),
+              body: TabBarView(
+                children: [
+                  HomeScreen(controller: _tabController,),
+                  CategoryBrand(),
+                  MyCart(),
+                  WishList(),
+                ],
+                controller: _tabController,
+              ),
+              // This trailing comma makes auto-formatting nicer for build methods.
+            ),
+          ),
         ),
-        // This trailing comma makes auto-formatting nicer for build methods.
-      ),
+        AnimatedPositioned(top: topPosition,left: leftPosition,duration:Duration(milliseconds: 3500),
+            child: Container(height: 100,width: 100,child: Image.asset("assets/logoluncher.png"),)
+        ),
+      ],
     );
   }
 }
