@@ -38,7 +38,8 @@ class _ReltedProductsState extends State<ReltedProducts> {
                             horizontal: ScreenUtil().setWidth(10),vertical: ScreenUtil().setHeight(10)),
                         child: InkWell(
                           onTap: () async {
-                            Product relatedProduct= await ProductRepo().getProductDetails(product.id,kUser.userId);
+                            Product relatedProduct= kUser==null?await ProductRepo().getProductDetails(product.id):await ProductRepo().getProductDetails(product.id,kUser.userId);
+
                             Navigator.push (
                               context,
                               MaterialPageRoute(builder: (context) => ProductDetail(product: relatedProduct,)),

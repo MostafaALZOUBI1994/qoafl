@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart';
 import 'package:qawafel/models/item_in_cart.dart';
 import 'package:qawafel/models/item_in_wishlist.dart';
@@ -12,8 +13,10 @@ class ProductRepo {
   Response response;
   var dio = new Dio();
   String accessToken = kUser==null? "" :kUser.accessToken ;
+  BuildContext context;
 
   Future<List<String>> getBanners() async {
+    BuildContext context;
     List<String> banners=[];
     try{
      response=await dio.get(baseUrl+"/sliders");
@@ -21,7 +24,7 @@ class ProductRepo {
        banners.add(item["photo"]);
      }).toList();
      return banners;
-    }catch(ex){print("getBanners  "+ex.toString());}
+    }catch(ex){showSnackBar(context,"get Banners "+ex.toString());}
   }
 
   Future<List<Product>> searchProductsByText(String searchText) async {
@@ -94,9 +97,7 @@ class ProductRepo {
 
         return allProducts;
       }
-    } catch (ex) {
-      print(ex.toString());
-    }
+    } catch(ex){showSnackBar(context,"Flash Deals "+ex.toString());}
   }
 
   Future<List<Product>> fetchProductsByCategory(String urlString) async {
@@ -111,9 +112,7 @@ class ProductRepo {
             .toList();
         return products;
       }
-    } catch (ex) {
-      print(ex.toString());
-    }
+    } catch(ex){showSnackBar(context,"products by category "+ex.toString());}
   }
 
   Future<List<Product>> fetchProductsByBrand(String urlString) async {
@@ -161,12 +160,9 @@ class ProductRepo {
         data["data"]
             .map((product) => classifiedProducts.add(Product.fromJson(product)))
             .toList();
-
         return classifiedProducts;
       }
-    } catch (ex) {
-      print(ex.toString());
-    }
+    } catch(ex){showSnackBar(context,"clasifeid ads "+ex.toString());}
   }
 
   Future<List<Product>> fetchReviews(String urlString) async {
@@ -187,7 +183,7 @@ class ProductRepo {
     }
   }
 
-  Future<Product> getProductDetails(int productId,int userId) async {
+  Future<Product> getProductDetails(int productId,[int userId]) async {
     try {
       var url = Uri.parse(productUrl + "products/$productId/$userId");
       var response = await http.get(url);
@@ -196,12 +192,10 @@ class ProductRepo {
         var product = data["data"][0];
         return Product.fromJson(product);
       }
-    } catch (ex) {
-      print(ex.toString());
-    }
+    } catch(ex){showSnackBar(context,"Products DEtails "+ex.toString());}
   }
 
-  Future<Product> getProductDetailsByUrl(String link,int userId) async {
+  Future<Product> getProductDetailsByUrl(String link,[int userId]) async {
     try {
       var url = Uri.parse(link+"/$userId");
       var response = await http.get(url);

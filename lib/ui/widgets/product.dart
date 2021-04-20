@@ -36,7 +36,7 @@ class _ProductsListState extends State<ProductsList> {
                       horizontal: ScreenUtil().setWidth(10)),
                   child: InkWell(
                     onTap: () async {
-                      Product  product=await ProductRepo().getProductDetails(state.products[index].id,kUser.userId);
+                      Product  product= kUser==null?await ProductRepo().getProductDetails(state.products[index].id): await ProductRepo().getProductDetails(state.products[index].id,kUser.userId);
                       Navigator.push (
                         context,
                         MaterialPageRoute(builder: (context) => ProductDetail(product: product,)),
