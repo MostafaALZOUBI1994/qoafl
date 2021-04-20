@@ -23,10 +23,18 @@ class ProductByBrand extends StatefulWidget {
 }
 
 class _ProductByBrandState extends State<ProductByBrand> {
-
+  List<Product> products=[];
   @override
   void initState() {
+    getProductsByBrand();
     super.initState();
+  }
+  Future<List<Product>> getProductsByBrand() async {
+    ProductRepo().fetchProductsByBrand(widget.brandProducts.links.products).then((value) {
+      setState(() {
+        products=value;
+      });
+    });
   }
   @override
   Widget build(BuildContext context) {
@@ -111,140 +119,124 @@ class _ProductByBrandState extends State<ProductByBrand> {
                       ),
                       SizedBox(height: ScreenUtil().setHeight(10),),
                       Container(
-                        child: FutureBuilder(
-                          future: ProductRepo().fetchProductsByBrand(widget.brandProducts.links.products),
-                          builder: (context, productSnap) {
-                            if (productSnap.connectionState == ConnectionState.done) {
-                              if (productSnap.data == null) {
-                                return Text('no data');
-                              } else {
-                                return  Container(
-                                  child:  AnimationLimiter(
-                                    child: GridView.count(shrinkWrap: true,scrollDirection: Axis.vertical,physics:NeverScrollableScrollPhysics(),
-                                      crossAxisCount: 2,crossAxisSpacing:5,mainAxisSpacing: 10,
-                                      children: List.generate(
-                                        productSnap.data.length,
-                                            (int index) {
+                        child:  AnimationLimiter(
+                          child: GridView.count(shrinkWrap: true,scrollDirection: Axis.vertical,physics:NeverScrollableScrollPhysics(),
+                            crossAxisCount: 2,crossAxisSpacing:5,mainAxisSpacing: 10,
+                            children: List.generate(
+                              products.length,
+                                  (int index) {
 
-                                          return AnimationConfiguration.staggeredGrid(
-                                            position: index,
-                                            duration: const Duration(milliseconds: 500),
-                                            columnCount: 2,
-                                            child: ScaleAnimation(
-                                              child: FadeInAnimation(
-                                                  child:Padding(
-                                                    padding: EdgeInsets.symmetric(
-                                                      horizontal: ScreenUtil().setWidth(18),),
-                                                    child: InkWell(
-                                                      onTap: () async {
-                                                        Product  product= kUser==null?await ProductRepo().getProductDetails(productSnap.data[index].id): await ProductRepo().getProductDetails(productSnap.data[index].id,kUser.userId);
-                                                        Navigator.push (
-                                                          context,
-                                                          MaterialPageRoute(builder: (context) => ProductDetail(product: product,)),
-                                                        );
-                                                      },
-                                                      child: Container(
-                                                        decoration: BoxDecoration(
-                                                          borderRadius: BorderRadius.circular(6.0),
-                                                          color: const Color(0xffffffff),
-                                                          border: Border.all(
-                                                              width: 0.1, color: const Color(0xff000000)),
-                                                          boxShadow: [
-                                                            BoxShadow(
-                                                              color: const Color(0x1a000000),
-                                                              offset: Offset(0, 0),
-                                                              blurRadius: 5,
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        child: Column(
-                                                          children: [
-                                                            SizedBox(
-                                                              height: ScreenUtil().setHeight(5),
-                                                            ),
-                                                            Container(
-                                                              height: ScreenUtil().setHeight(87),
-                                                              child: CachedNetworkImage(
-                                                                imageUrl:
-                                                                mediaUrl +productSnap.data[index].thumbnailImage,
-                                                                placeholder: (context, url) => Padding(
-                                                                  padding: const EdgeInsets.all(8.0),
-                                                                  child: Center(child: CircularProgressIndicator()),
-                                                                ),
-                                                                errorWidget: (context, url, error) =>
-                                                                    Icon(Icons.error),
-                                                              ),
-                                                            ),
-
-                                                            SizedBox(
-                                                              height: ScreenUtil().setHeight(5),
-                                                            ),
-                                                            Padding(
-                                                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                                              child: Text(
-                                                                productSnap.data[index].name,
-                                                                overflow: TextOverflow.ellipsis,
-                                                                style: TextStyle(fontSize: ScreenUtil().setSp(14)),
-                                                              ),
-                                                            ),
-                                                            SizedBox(
-                                                              height: ScreenUtil().setHeight(5),
-                                                            ),
-                                                            SizedBox(
-                                                              height: ScreenUtil().setHeight(5),
-                                                            ),
-                                                            Row(
-                                                              children: [
-                                                                SizedBox(
-                                                                  width: ScreenUtil().setWidth(8),
-                                                                ),
-                                                                RatingBarIndicator(
-                                                                  rating: productSnap.data[index].rating.toDouble(),
-                                                                  itemBuilder: (context, index) => Icon(
-                                                                    Icons.star,
-                                                                    color: Colors.amber,
-                                                                  ),
-                                                                  itemCount: 5,
-                                                                  itemSize: ScreenUtil().setWidth(10),
-                                                                  direction: Axis.horizontal,
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            SizedBox(
-                                                              height: ScreenUtil().setHeight(5),
-                                                            ),
-                                                            Row(
-                                                              children: [
-                                                                SizedBox(
-                                                                  width: ScreenUtil().setWidth(8),
-                                                                ),
-                                                                Text(
-                                                                  productSnap.data[index].basePrice.toString(),
-                                                                  style: TextStyle(
-                                                                      fontSize: ScreenUtil().setSp(14),
-                                                                      color: Theme.of(context).primaryColor),
-                                                                )
-                                                              ],
-                                                            )
-                                                          ],
-                                                        ),
+                                return AnimationConfiguration.staggeredGrid(
+                                  position: index,
+                                  duration: const Duration(milliseconds: 500),
+                                  columnCount: 2,
+                                  child: ScaleAnimation(
+                                    child: FadeInAnimation(
+                                        child:Padding(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: ScreenUtil().setWidth(18),),
+                                          child: InkWell(
+                                            onTap: () async {
+                                              Product  product= kUser==null?await ProductRepo().getProductDetails(products[index].id): await ProductRepo().getProductDetails(products[index].id,kUser.userId);
+                                              Navigator.push (
+                                                context,
+                                                MaterialPageRoute(builder: (context) => ProductDetail(product: product,)),
+                                              );
+                                            },
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(6.0),
+                                                color: const Color(0xffffffff),
+                                                border: Border.all(
+                                                    width: 0.1, color: const Color(0xff000000)),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: const Color(0x1a000000),
+                                                    offset: Offset(0, 0),
+                                                    blurRadius: 5,
+                                                  ),
+                                                ],
+                                              ),
+                                              child: Column(
+                                                children: [
+                                                  SizedBox(
+                                                    height: ScreenUtil().setHeight(5),
+                                                  ),
+                                                  Container(
+                                                    height: ScreenUtil().setHeight(87),
+                                                    child: CachedNetworkImage(
+                                                      imageUrl:
+                                                      mediaUrl +products[index].thumbnailImage,
+                                                      placeholder: (context, url) => Padding(
+                                                        padding: const EdgeInsets.all(8.0),
+                                                        child: Center(child: CircularProgressIndicator()),
                                                       ),
+                                                      errorWidget: (context, url, error) =>
+                                                          Icon(Icons.error),
                                                     ),
+                                                  ),
+
+                                                  SizedBox(
+                                                    height: ScreenUtil().setHeight(5),
+                                                  ),
+                                                  Padding(
+                                                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                                    child: Text(
+                                                      products[index].name,
+                                                      overflow: TextOverflow.ellipsis,
+                                                      style: TextStyle(fontSize: ScreenUtil().setSp(14)),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    height: ScreenUtil().setHeight(5),
+                                                  ),
+                                                  SizedBox(
+                                                    height: ScreenUtil().setHeight(5),
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      SizedBox(
+                                                        width: ScreenUtil().setWidth(8),
+                                                      ),
+                                                      RatingBarIndicator(
+                                                        rating: products[index].rating.toDouble(),
+                                                        itemBuilder: (context, index) => Icon(
+                                                          Icons.star,
+                                                          color: Colors.amber,
+                                                        ),
+                                                        itemCount: 5,
+                                                        itemSize: ScreenUtil().setWidth(10),
+                                                        direction: Axis.horizontal,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    height: ScreenUtil().setHeight(5),
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      SizedBox(
+                                                        width: ScreenUtil().setWidth(8),
+                                                      ),
+                                                      Text(
+                                                       products[index].basePrice.toString(),
+                                                        style: TextStyle(
+                                                            fontSize: ScreenUtil().setSp(14),
+                                                            color: Theme.of(context).primaryColor),
+                                                      )
+                                                    ],
                                                   )
+                                                ],
                                               ),
                                             ),
-                                          );
-                                        },
-                                      ),
+                                          ),
+                                        )
                                     ),
                                   ),
                                 );
-                              }
-                            }  else {
-                              return Center(child: CircularProgressIndicator()); // loading
-                            }
-                          },
-
+                              },
+                            ),
+                          ),
                         ),
                       )
                     ],
