@@ -79,6 +79,9 @@ class _MainScreenState extends State<MainScreen>
                                     onTap: () async {
                                       //ProductRepo().ad();
                                       action();
+                                      setState(() {
+
+                                      });
                                     },
                                     child:CircleAvatar(
                                       radius: 30.0,
@@ -157,7 +160,7 @@ class _MainScreenState extends State<MainScreen>
                 children: [
                   HomeScreen(controller: _tabController,),
                   CategoryBrand(),
-                kUser==null?Container():  MyCart(),
+                kUser==null?Center(child: Text("Sign In Please...."),):  MyCart(),
                   WishList(),
                 ],
                 controller: _tabController,

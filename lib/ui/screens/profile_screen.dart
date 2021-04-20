@@ -187,7 +187,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 InkWell(onTap: () async {
     bool signOut=await UserRepo(context).signOut();
     signOut?Navigator.pop(context):(){};
-
                 },
                   child: Padding(
                     padding: EdgeInsets.symmetric(

@@ -14,8 +14,12 @@ class CartItems extends StatefulWidget {
 
 class _CartItemsState extends State<CartItems> {
   @override
-  Widget build(BuildContext context) {
+  _CartItemsState createState() => _CartItemsState();
+}
 
+class _CartItemsState extends State<CartItems> {
+  @override
+  Widget build(BuildContext context) {
 
     return FutureBuilder(
         future:  ProductRepo().getCartProducts(kUser.userId),initialData: [],
@@ -44,7 +48,7 @@ class _CartItemsState extends State<CartItems> {
                       SizedBox(height: ScreenUtil().setHeight(17),),
                       Row(
                         children: [
-                          Expanded(child: Text(item.product.name,)),
+                          Expanded(child: Text(item.product.name)),
                         ],
                       ),
                       SizedBox(height: ScreenUtil().setHeight(17),),
@@ -124,6 +128,7 @@ class _CartItemsState extends State<CartItems> {
                                   item.quantity++;
                                 });
                                 await ProductRepo().changeQuantity(item.id, item.quantity);
+
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -159,7 +164,6 @@ class _CartItemsState extends State<CartItems> {
                       ),),
                       SizedBox(height: ScreenUtil().setHeight(17),),
                       buttonWidget("Delete",Theme.of(context).accentColor,() async {
-
                         await   ProductRepo().removeFromCart(item.id, kUser.accessToken);
                         setState(() {
 

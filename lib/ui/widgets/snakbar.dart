@@ -14,3 +14,11 @@ void showSnackBar(BuildContext context,String message) {
     ),
   );
 }
+void showToast(BuildContext context,String messege) {
+  final scaffold = Scaffold.of(context);
+  scaffold.showSnackBar(
+    SnackBar(
+      content:  Text(messege.toString()),
+    ),
+  );
+}

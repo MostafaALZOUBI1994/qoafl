@@ -1,4 +1,4 @@
-import 'dart:convert';
+
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -6,21 +6,23 @@ import 'package:qawafel/constants.dart';
 import 'package:qawafel/models/address.dart';
 import 'package:qawafel/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../ui/widgets/snakbar.dart';
 
 class UserRepo {
   Response response;
   var dio = Dio();
   final BuildContext context;
+
   User user;
   UserRepo(this.context);
   Future<bool> getUser() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       if (prefs.get("token")==null) {
+
         return false;
       } else {
+
         user = User(accessToken: prefs.get("token"), userId: prefs.get("userId"));
         await getUserProfile(user.accessToken, user.userId);
         return true;
@@ -90,6 +92,7 @@ class UserRepo {
 
   Future<bool> signOut() async {
     try {
+
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.remove("userId");
       prefs.remove("token");

@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/screenutil_init.dart';
 import 'package:qawafel/bloc/AllCategory_bloc/all_category_bloc.dart';
 
+
 import 'package:qawafel/bloc/quantity_bloc/quantity_bloc.dart';
 import 'package:qawafel/bloc/topBrand_bloc/top_brand_bloc.dart';
 import 'package:qawafel/bloc/topCategory_bloc/bloc/topcategory_bloc.dart';
-import 'package:qawafel/models/user.dart';
 import 'package:qawafel/repository/brandRepo.dart';
 import 'package:qawafel/repository/categoryRepo.dart';
 import 'package:qawafel/repository/userRepo.dart';
@@ -43,6 +43,7 @@ Future<void> main() async {
       ),
       BlocProvider<QuantityBloc>(
           create: (BuildContext context) => QuantityBloc()),
+
 
     ],
     child: MaterialApp(

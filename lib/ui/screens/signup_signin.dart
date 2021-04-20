@@ -189,12 +189,12 @@ class _Signup_SigninScreenState extends State<Signup_SigninScreen> {
                               ),
                               buttonWidget(
                                   "sign in", Theme.of(context).primaryColor,
-                                  () {
+                                  () async {
                                 if (emailUserNameController.text == null ||
                                     passwordController.text == null) {
                                   showSnackBar(context, "Please fill fields");
                                 } else {
-                                  UserRepo(context).signIn(
+                              await    UserRepo(context).signIn(
                                       emailUserNameController.text,
                                       passwordController.text);
                                   showSnackBar(context, "SignIn Success");
@@ -466,7 +466,7 @@ class _Signup_SigninScreenState extends State<Signup_SigninScreen> {
                                           horizontal:
                                               ScreenUtil().setWidth(83)),
                                       child: buttonWidget("Sign up",
-                                          Theme.of(context).primaryColor, () {
+                                          Theme.of(context).primaryColor, () async {
                                         if (nameController.text.isEmpty ||
                                             emailController.text.isEmpty ||
                                             registerPasswordController
@@ -478,7 +478,7 @@ class _Signup_SigninScreenState extends State<Signup_SigninScreen> {
                                           if(registerPasswordController.text !=passwordConfirmController.text){
                                             showSnackBar(context, "Password doesn't match confirm password");
                                           }
-                                          UserRepo(context)
+                                       await   UserRepo(context)
                                               .signUp(
                                                   nameController.text,
                                                   emailController.text,
