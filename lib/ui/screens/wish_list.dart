@@ -20,7 +20,9 @@ class _WishListState extends State<WishList> {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(top: ScreenUtil().setHeight(20)),
-      child: FutureBuilder(
+      child:
+
+     kUser==null?Center(child: Text("Please Sign up")): FutureBuilder(
         future: ProductRepo().getWishList(kUser.userId.toString()),
         builder: (context, productSnap) {
           if (productSnap.connectionState == ConnectionState.done) {

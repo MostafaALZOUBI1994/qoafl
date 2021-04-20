@@ -11,13 +11,12 @@ import 'dart:convert';
 class ProductRepo {
   Response response;
   var dio = new Dio();
-  String accessToken = kUser.accessToken ;
+  String accessToken = kUser==null? "" :kUser.accessToken ;
 
   Future<List<String>> getBanners() async {
     List<String> banners=[];
     try{
      response=await dio.get(baseUrl+"/sliders");
-
      response.data["data"].map((item) {
        banners.add(item["photo"]);
      }).toList();
@@ -297,7 +296,7 @@ class ProductRepo {
 
       print(response.data.toString());
     } catch (ex) {
-      print("change quantity " + ex.toString());
+      print("add to caart " + ex.toString());
     }
   }
 

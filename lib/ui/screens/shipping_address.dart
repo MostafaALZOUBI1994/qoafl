@@ -191,8 +191,8 @@ class _AddressState extends State<Address> with SingleTickerProviderStateMixin {
                                           child: Text("Address")),
 
 
-                                      Text(address.address),
-                                      SizedBox(width: ScreenUtil().setWidth(140),),
+                                      Flexible(child: Text(address.address)),
+                                      SizedBox(width: ScreenUtil().setWidth(40),),
                                       IconButton(icon: Icon(Icons.close,color: Theme.of(context).primaryColor,), onPressed: () async {
                                         await UserRepo(context).removeAddresss(address.id,kUser.accessToken);
                                         setState(() {

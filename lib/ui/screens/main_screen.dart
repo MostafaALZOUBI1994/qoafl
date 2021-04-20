@@ -80,15 +80,15 @@ class _MainScreenState extends State<MainScreen>
                                       //ProductRepo().ad();
                                       action();
                                     },
-                                    child:kUser==null?Container() :CircleAvatar(
+                                    child:CircleAvatar(
                                       radius: 30.0,
-                                      backgroundImage: kUser.accessToken==null || kUser.userInfo.avatar==null ? AssetImage("assets/user.png")
+                                      backgroundImage: kUser==null || kUser.userInfo.avatar==null ? AssetImage("assets/user.png")
                                           :NetworkImage(mediaUrl+kUser.userInfo.avatar ,),
                                       backgroundColor: backColor,
                                     ),
                                   ),
                               openBuilder: (BuildContext c, VoidCallback action) =>
-                              kUser.accessToken==null?   Signup_SigninScreen()
+                              kUser==null?   Signup_SigninScreen()
                                   :ProfileScreen(),
                               tappable: false,
                             ),
@@ -124,9 +124,28 @@ class _MainScreenState extends State<MainScreen>
                       new Tab(
                         icon: new Icon(MyFlutterApp.category),
                       ),
-                      new Tab(
-                        icon: new Icon(Icons.shopping_cart_outlined),
-                      ),
+                   kUser==null?   OpenContainer(
+                        closedElevation: 0,
+                        openColor: backColor,
+                        transitionType: ContainerTransitionType.fadeThrough,
+                        transitionDuration: Duration(milliseconds: 500),
+                        closedBuilder: (BuildContext c, VoidCallback action) =>
+                            InkWell(
+                              onTap: () async {
+                                action();
+
+                              },
+                              child:Container(child: Icon(MaterialIcons.account_circle),)
+                            ),
+                        openBuilder: (BuildContext c, VoidCallback action) =>
+                         Signup_SigninScreen(),
+
+
+                        tappable: false,
+                      )
+                   : new Tab(
+                     icon: new Icon(MaterialIcons.shopping_cart),
+                   ),
 
                       new Tab(
                         icon: new Icon(MaterialIcons.favorite_border),
@@ -138,7 +157,7 @@ class _MainScreenState extends State<MainScreen>
                 children: [
                   HomeScreen(controller: _tabController,),
                   CategoryBrand(),
-                  MyCart(),
+                kUser==null?Container():  MyCart(),
                   WishList(),
                 ],
                 controller: _tabController,

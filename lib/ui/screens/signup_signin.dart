@@ -199,6 +199,9 @@ class _Signup_SigninScreenState extends State<Signup_SigninScreen> {
                                       passwordController.text);
                                   showSnackBar(context, "SignIn Success");
                                   Navigator.pop(context);
+                                  setState(() {
+
+                                  });
                                 }
                               }),
                               SizedBox(

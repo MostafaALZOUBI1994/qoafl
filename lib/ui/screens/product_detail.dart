@@ -773,6 +773,9 @@ class _ProductDetailState extends State<ProductDetail> {
                                             variant);
                                         showSnackBar(context,
                                             "The Product added to cart");
+                                        setState(() {
+                                          inCart=true;
+                                        });
                                       },
                                       child: Container(
                                         width: ScreenUtil().setWidth(87),

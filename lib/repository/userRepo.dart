@@ -18,11 +18,10 @@ class UserRepo {
   Future<bool> getUser() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-
-      user = User(accessToken: prefs.get("token"), userId: prefs.get("userId"));
-      if (user == null) {
+      if (prefs.get("token")==null) {
         return false;
       } else {
+        user = User(accessToken: prefs.get("token"), userId: prefs.get("userId"));
         await getUserProfile(user.accessToken, user.userId);
         return true;
       }
@@ -94,8 +93,7 @@ class UserRepo {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.remove("userId");
       prefs.remove("token");
-      kUser.userId = null;
-      kUser.accessToken = null;
+      kUser=null;
       showSnackBar(context, "Sign Out successfully");
       return true;
     } catch (ex) {
