@@ -52,6 +52,7 @@ class _MainScreenState extends State<MainScreen>
   Widget build(BuildContext context) {
     return Stack(
       children: [
+        Container(color: Colors.white,),
         AnimatedOpacity(opacity: mainScreenOpacity,duration:Duration(milliseconds: 3500),
           child: DefaultTabController(
             length: 4,

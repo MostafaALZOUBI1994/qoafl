@@ -30,23 +30,20 @@ class _ProductDetailState extends State<ProductDetail> {
   int selectedPhoto = 0;
   int selectedDetail = 0;
   bool _onFirstPage = true;
-  bool isLiked=false;
+  bool isLiked = false;
+  bool inCart = false;
   VideoPlayerController _controller;
   Future<void> _initializeVideoPlayerFuture;
 
-
-
   @override
   void initState() {
-
+    checkExistInCartInWishList();
     // Create an store the VideoPlayerController. The VideoPlayerController
     // offers several different constructors to play videos from assets, files,
     // or the internet.
     _controller = VideoPlayerController.network(
       "https://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_20mb.mp4",
     );
-
-    _initializeVideoPlayerFuture = _controller.initialize();
 
     super.initState();
   }
@@ -59,9 +56,15 @@ class _ProductDetailState extends State<ProductDetail> {
     super.dispose();
   }
 
+  checkExistInCartInWishList() {
+    setState(() {
+      isLiked = widget.product.isExistInWishList.isNotEmpty;
+      inCart = widget.product.isExistInCart.isNotEmpty;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -195,7 +198,8 @@ class _ProductDetailState extends State<ProductDetail> {
                                       });
                                     },
                                     child: Padding(
-                                      padding:  EdgeInsets.symmetric(horizontal:8.0),
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 8.0),
                                       child: Container(
                                         width: ScreenUtil().setWidth(62),
                                         height: ScreenUtil().setWidth(62),
@@ -205,7 +209,8 @@ class _ProductDetailState extends State<ProductDetail> {
                                           border: Border.all(
                                               width: 1.0,
                                               color: index == selectedPhoto
-                                                  ? Theme.of(context).primaryColor
+                                                  ? Theme.of(context)
+                                                      .primaryColor
                                                   : Color(0xff707070)),
                                         ),
                                         child: Padding(
@@ -213,9 +218,12 @@ class _ProductDetailState extends State<ProductDetail> {
                                           child: CachedNetworkImage(
                                             imageUrl: mediaUrl +
                                                 widget.product.photos[index],
-                                            placeholder: (context, url) => Padding(
-                                              padding: const EdgeInsets.all(8.0),
-                                              child: CircularProgressIndicator(),
+                                            placeholder: (context, url) =>
+                                                Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child:
+                                                  CircularProgressIndicator(),
                                             ),
                                           ),
                                         ),
@@ -400,8 +408,7 @@ class _ProductDetailState extends State<ProductDetail> {
                         transitionType: SharedAxisTransitionType.horizontal,
                       );
                     },
-                    child: pageViewContent()
-                    ),
+                    child: pageViewContent()),
               ],
             ),
           ),
@@ -591,19 +598,64 @@ class _ProductDetailState extends State<ProductDetail> {
                         ],
                       ),
                       Padding(
-                        padding: EdgeInsets.only(
-                          top: ScreenUtil().setHeight(11),
-                          left: ScreenUtil().setWidth(14),
-                        ),
-                        child: BlocBuilder<QuantityBloc,QuantityState>(
-                          builder: (context,state){
-                            return Row(
-                              children: [
-                                InkWell(
+                          padding: EdgeInsets.only(
+                            top: ScreenUtil().setHeight(11),
+                            left: ScreenUtil().setWidth(14),
+                          ),
+                          child: BlocBuilder<QuantityBloc, QuantityState>(
+                            builder: (context, state) {
+                              return Row(
+                                children: [
+                                  InkWell(
+                                      onTap: () {
+                                        state.quantity == 1
+                                            ? () {}
+                                            : quantityBloc
+                                                .add(DecrementEvent());
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.elliptical(
+                                                  9999.0, 9999.0)),
+                                          color: const Color(0xffffffff),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: const Color(0x19000000),
+                                              offset: Offset(0, 0),
+                                              blurRadius: 6,
+                                            ),
+                                          ],
+                                        ),
+                                        child: Icon(Icons.remove),
+                                      )),
+                                  SizedBox(
+                                    width: ScreenUtil().setWidth(15),
+                                  ),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      color: const Color(0xffffffff),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: const Color(0x19000000),
+                                          offset: Offset(0, 0),
+                                          blurRadius: 6,
+                                        ),
+                                      ],
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 22.0, vertical: 4),
+                                      child: Text(state.quantity.toString()),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: ScreenUtil().setWidth(15),
+                                  ),
+                                  InkWell(
                                     onTap: () {
-                                      state.quantity == 1
-                                          ? () {}
-                                          :quantityBloc.add(DecrementEvent());
+                                      quantityBloc.add(IncrementEvent());
                                     },
                                     child: Container(
                                       decoration: BoxDecoration(
@@ -618,66 +670,22 @@ class _ProductDetailState extends State<ProductDetail> {
                                           ),
                                         ],
                                       ),
-                                      child: Icon(Icons.remove),
-                                    )),
-                                SizedBox(
-                                  width: ScreenUtil().setWidth(15),
-                                ),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    color: const Color(0xffffffff),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: const Color(0x19000000),
-                                        offset: Offset(0, 0),
-                                        blurRadius: 6,
-                                      ),
-                                    ],
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 22.0, vertical: 4),
-                                    child: Text(state.quantity.toString()),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: ScreenUtil().setWidth(15),
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                      quantityBloc.add(IncrementEvent());
-
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.elliptical(9999.0, 9999.0)),
-                                      color: const Color(0xffffffff),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: const Color(0x19000000),
-                                          offset: Offset(0, 0),
-                                          blurRadius: 6,
-                                        ),
-                                      ],
+                                      child: Icon(Icons.add),
                                     ),
-                                    child: Icon(Icons.add),
                                   ),
-                                ),
-                                SizedBox(
-                                  width: ScreenUtil().setWidth(80),
-                                ),
-                                Text(
-                                  (state.quantity * widget.product.priceLower).toString(),
-                                  style: TextStyle(
-                                      color: Theme.of(context).primaryColor),
-                                )
-                              ],
-                            );
-                          },
-                        )
-                      ),
+                                  SizedBox(
+                                    width: ScreenUtil().setWidth(80),
+                                  ),
+                                  Text(
+                                    (state.quantity * widget.product.priceLower)
+                                        .toString(),
+                                    style: TextStyle(
+                                        color: Theme.of(context).primaryColor),
+                                  )
+                                ],
+                              );
+                            },
+                          )),
                       Padding(
                           padding: EdgeInsets.only(
                             top: ScreenUtil().setHeight(11),
@@ -686,11 +694,7 @@ class _ProductDetailState extends State<ProductDetail> {
                           child: Row(
                             children: [
                               InkWell(
-                                onTap: () async {
-                                  var variant=widget.product.stocks.isEmpty? "" :widget.product.stocks[0]["variant"] ;
-                                  await ProductRepo().addToCart(kUser.userId,widget.product.id,variant);
-                                  showSnackBar(context, "The Product added to cart");
-                                },
+                                onTap: () {},
                                 child: Container(
                                   width: ScreenUtil().setWidth(87),
                                   decoration: BoxDecoration(
@@ -724,69 +728,109 @@ class _ProductDetailState extends State<ProductDetail> {
                               SizedBox(
                                 width: ScreenUtil().setWidth(25),
                               ),
-                              InkWell(
-                                onTap: () async {
-                                 var variant=widget.product.stocks.isEmpty? "" :widget.product.stocks[0]["variant"] ;
-                                  await ProductRepo().addToCart(kUser.userId,widget.product.id,variant);
-                                  showSnackBar(context, "The Product added to cart");
-                                },
-                                child: Container(
-                                  width: ScreenUtil().setWidth(87),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(23.0),
-                                    color: Colors.white,
-                                    border: Border.all(
-                                        width: 1.0,
-                                        color: Theme.of(context).primaryColor),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 8.0, horizontal: 2.0),
-                                    child: Center(
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.shopping_cart_outlined,
-                                            size: 15,
+                              inCart
+                                  ? Container(
+                                      width: ScreenUtil().setWidth(87),
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(23.0),
+                                        color: Theme.of(context).primaryColor,
+                                        border: Border.all(
+                                            width: 1.0,
                                             color:
-                                                Theme.of(context).primaryColor,
+                                                Theme.of(context).primaryColor),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 8.0, horizontal: 2.0),
+                                        child: Center(
+                                          child: Row(
+                                            children: [
+                                              Icon(
+                                                Icons.shopping_cart_outlined,
+                                                size: 15,
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                              ),
+                                              Text("Added",
+                                                  style: TextStyle(
+                                                      color: Colors.white)),
+                                            ],
                                           ),
-                                          Text("Add to cart",
-                                              style: TextStyle(
+                                        ),
+                                      ),
+                                    )
+                                  : InkWell(
+                                      onTap: () async {
+                                        var variant =
+                                            widget.product.stocks.isEmpty
+                                                ? ""
+                                                : widget.product.stocks[0]
+                                                    ["variant"];
+                                        await ProductRepo().addToCart(
+                                            kUser.userId,
+                                            widget.product.id,
+                                            variant);
+                                        showSnackBar(context,
+                                            "The Product added to cart");
+                                      },
+                                      child: Container(
+                                        width: ScreenUtil().setWidth(87),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(23.0),
+                                          color: Colors.white,
+                                          border: Border.all(
+                                              width: 1.0,
+                                              color: Theme.of(context)
+                                                  .primaryColor),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 8.0, horizontal: 2.0),
+                                          child: Center(
+                                            child: Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.shopping_cart_outlined,
+                                                  size: 15,
                                                   color: Theme.of(context)
-                                                      .primaryColor)),
-                                        ],
+                                                      .primaryColor,
+                                                ),
+                                                Text("Add to cart",
+                                                    style: TextStyle(
+                                                        color: Theme.of(context)
+                                                            .primaryColor)),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ),
-                              ),
                               SizedBox(
                                 width: ScreenUtil().setWidth(25),
                               ),
                               LikeButton(
-
-                                  onTap:(nothing) async {
-
-
-                                if(isLiked){
-                                  await ProductRepo().removeFromWishList( widget.product.id);
-                                  showSnackBar(context, "The Product removed from Favourites");
-                                }
-                                else{
-                                  await ProductRepo().saveToWishList(kUser.userId, widget.product.id);
-                                  showSnackBar(context, "The Product added to Favourites");
-                                }
-                                setState(() {
-                                  isLiked=!isLiked;
-                                });
-
-                              },
-                                circleColor: CircleColor(
-                                    start: Theme.of(context).primaryColor,
-                                    end: Theme.of(context).accentColor), isLiked: isLiked
-
-                              ),
+                                  onTap: (nothing) async {
+                                    if (isLiked) {
+                                      await ProductRepo().removeFromWishList(
+                                          widget.product.isExistInWishList[0]["id"]);
+                                      showSnackBar(context,
+                                          "The Product removed from Favourites");
+                                    } else {
+                                      await ProductRepo().saveToWishList(
+                                          kUser.userId, widget.product.id);
+                                      showSnackBar(context,
+                                          "The Product added to Favourites");
+                                    }
+                                    setState(() {
+                                      isLiked = !isLiked;
+                                    });
+                                  },
+                                  circleColor: CircleColor(
+                                      start: Theme.of(context).primaryColor,
+                                      end: Theme.of(context).accentColor),
+                                  isLiked: isLiked),
                               SizedBox(
                                 width: ScreenUtil().setWidth(25),
                               ),
@@ -881,14 +925,15 @@ class _ProductDetailState extends State<ProductDetail> {
         );
         break;
       case 2:
-        return Container(width: 300,height: 300,
-            key: UniqueKey(),
-            child: VideoWidget());
+        return Container(
+            width: 300, height: 300, key: UniqueKey(), child: VideoWidget());
         break;
       case 3:
         return Container(
             key: UniqueKey(),
-            child: Center(child: Text("No reviews"),));
+            child: Center(
+              child: Text("No reviews"),
+            ));
         break;
     }
   }

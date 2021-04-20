@@ -278,6 +278,7 @@ class ProductRepo {
     try {
       response = await dio.delete(baseUrl + "/wishlists/$productId",
           options: Options(headers: {"Authorization": 'Bearer $accessToken'}));
+      print(response.data);
     } catch (ex) {
       print("remove from wishlist " + ex.toString());
     }
