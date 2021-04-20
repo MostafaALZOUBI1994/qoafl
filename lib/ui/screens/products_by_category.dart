@@ -24,7 +24,6 @@ class _ProductByCategoryState extends State<ProductByCategory> {
   Category showedCategory;
   @override
   void initState() {
-    // TODO: implement initState
     showedCategory=widget.mainCategory;
     super.initState();
   }
@@ -194,7 +193,7 @@ class _ProductByCategoryState extends State<ProductByCategory> {
                                       children: List.generate(
                                         productSnap.data.length,
                                             (int index) {
-                                              print(productSnap.data[index]);
+
                                           return AnimationConfiguration.staggeredGrid(
                                             position: index,
                                             duration: const Duration(milliseconds: 500),

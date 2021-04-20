@@ -1,4 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:qawafel/bloc/classifiedAds_bloc/classifiedAds_bloc.dart';
+import 'package:qawafel/bloc/classifiedAds_bloc/classifiedAds_event.dart';
 import 'package:qawafel/constants.dart';
 import 'package:qawafel/repository/productRepo.dart';
 import 'package:qawafel/ui/widgets/classified_ads.dart';
@@ -27,6 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
   TopcategoryBloc topcategoryBloc;
   TopBrandBloc topBrandBloc;
   ProductBloc productBloc;
+  ClassifiedAdsBloc classifiedAdsBloc;
 
   bool selected = true;
   @override
@@ -34,9 +37,11 @@ class _HomeScreenState extends State<HomeScreen> {
     topcategoryBloc = BlocProvider.of<TopcategoryBloc>(context);
     topBrandBloc = BlocProvider.of<TopBrandBloc>(context);
     productBloc = BlocProvider.of<ProductBloc>(context);
+    classifiedAdsBloc=BlocProvider.of<ClassifiedAdsBloc>(context);
     productBloc.add(FetchProducts());
     topcategoryBloc.add(FetchTopCategories());
     topBrandBloc.add(FetchTopBrands());
+    classifiedAdsBloc.add(FetchClassifiedProducts());
 
     super.initState();
   }
@@ -46,6 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
     topcategoryBloc.close();
     topBrandBloc.close();
     productBloc.close();
+    classifiedAdsBloc.close();
     super.dispose();
   }
 

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/screenutil_init.dart';
 import 'package:qawafel/bloc/AllCategory_bloc/all_category_bloc.dart';
+import 'package:qawafel/bloc/classifiedAds_bloc/classifiedAds_bloc.dart';
+import 'package:qawafel/bloc/classifiedAds_bloc/classifiedAds_state.dart';
 
 
 import 'package:qawafel/bloc/quantity_bloc/quantity_bloc.dart';
@@ -43,6 +45,8 @@ Future<void> main() async {
       ),
       BlocProvider<QuantityBloc>(
           create: (BuildContext context) => QuantityBloc()),
+      BlocProvider<ClassifiedAdsBloc>(
+          create: (BuildContext context) => ClassifiedAdsBloc(ClassifiedProductInitial(), ProductRepo())),
 
 
     ],

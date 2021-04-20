@@ -112,7 +112,7 @@ class _ProductByBrandState extends State<ProductByBrand> {
                       SizedBox(height: ScreenUtil().setHeight(10),),
                       Container(
                         child: FutureBuilder(
-                          future: ProductRepo().fetchProductsByCategory(widget.brandProducts.links.products),
+                          future: ProductRepo().fetchProductsByBrand(widget.brandProducts.links.products),
                           builder: (context, productSnap) {
                             if (productSnap.connectionState == ConnectionState.done) {
                               if (productSnap.data == null) {
@@ -125,7 +125,7 @@ class _ProductByBrandState extends State<ProductByBrand> {
                                       children: List.generate(
                                         productSnap.data.length,
                                             (int index) {
-                                          print(productSnap.data[index]);
+
                                           return AnimationConfiguration.staggeredGrid(
                                             position: index,
                                             duration: const Duration(milliseconds: 500),
@@ -219,7 +219,7 @@ class _ProductByBrandState extends State<ProductByBrand> {
                                                                   width: ScreenUtil().setWidth(8),
                                                                 ),
                                                                 Text(
-                                                                  productSnap.data[index].basePrice,
+                                                                  productSnap.data[index].basePrice.toString(),
                                                                   style: TextStyle(
                                                                       fontSize: ScreenUtil().setSp(14),
                                                                       color: Theme.of(context).primaryColor),
