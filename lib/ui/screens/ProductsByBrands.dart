@@ -24,6 +24,7 @@ class ProductByBrand extends StatefulWidget {
 
 class _ProductByBrandState extends State<ProductByBrand> {
   List<Product> products=[];
+  bool emptyList=false;
   @override
   void initState() {
     getProductsByBrand();
@@ -33,6 +34,7 @@ class _ProductByBrandState extends State<ProductByBrand> {
     ProductRepo().fetchProductsByBrand(widget.brandProducts.links.products).then((value) {
       setState(() {
         products=value;
+        products.isEmpty?emptyList=true:emptyList=false;
       });
     });
   }
@@ -94,7 +96,7 @@ class _ProductByBrandState extends State<ProductByBrand> {
                 ],
               ),
               SizedBox(height: ScreenUtil().setHeight(10),),
-              Container(
+              emptyList?Center(child: Text("no product")):     Container(
                 width: ScreenUtil().setWidth(375),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(25.0),

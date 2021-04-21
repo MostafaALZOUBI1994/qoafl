@@ -31,12 +31,9 @@ dependencies:
   flutter_screenutil: ^4.0.3+3
   image_picker: ^0.7.4
   dio: ^4.0.0
-  postman_dio:
   cached_network_image:
   flutter_icons: ^1.1.0
   smooth_page_indicator: ^0.2.3
-  pin_code_fields:
-  country_code_picker:
   flutter_staggered_animations:
   animations:
   http:
@@ -55,7 +52,6 @@ dependencies:
   video_player:
   like_button:
   flutter_animated_dialog:
-  custom_splash:
   carousel_slider:
   webview_flutter:
 

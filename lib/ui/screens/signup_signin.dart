@@ -1,9 +1,9 @@
 import 'package:animations/animations.dart';
-import 'package:country_code_picker/country_code_picker.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/screen_util.dart';
-import 'package:pin_code_fields/pin_code_fields.dart';
+
 import 'package:qawafel/repository/userRepo.dart';
 import 'package:qawafel/ui/widgets/date.dart';
 import 'package:qawafel/ui/widgets/snakbar.dart';
@@ -572,33 +572,7 @@ class _Signup_SigninScreenState extends State<Signup_SigninScreen> {
                                     SizedBox(
                                       height: ScreenUtil().setHeight(5),
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal:
-                                              ScreenUtil().setWidth(11)),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                          color: const Color(0xffffffff),
-                                          border: Border.all(
-                                              width: 0.2,
-                                              color: const Color(0xff000000)),
-                                        ),
-                                        child: CountryCodePicker(
-                                          alignLeft: true,
-                                          showCountryOnly: true,
-                                          showFlagDialog: false,
-                                          backgroundColor: Colors.white,
-                                          showDropDownButton: true,
-                                          showFlag: false,
-                                          padding: EdgeInsets.only(
-                                              left: ScreenUtil().setWidth(14)),
-                                          showOnlyCountryWhenClosed: true,
-                                          showFlagMain: false,
-                                        ),
-                                      ),
-                                    ),
+
                                     SizedBox(
                                       height: ScreenUtil().setHeight(18),
                                     ),

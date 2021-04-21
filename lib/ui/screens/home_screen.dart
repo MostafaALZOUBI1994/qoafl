@@ -1,8 +1,11 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:qawafel/bloc/banners_bloc/basnners_bloc.dart';
+import 'package:qawafel/bloc/banners_bloc/basnners_event.dart';
 import 'package:qawafel/bloc/classifiedAds_bloc/classifiedAds_bloc.dart';
 import 'package:qawafel/bloc/classifiedAds_bloc/classifiedAds_event.dart';
 import 'package:qawafel/constants.dart';
 import 'package:qawafel/repository/productRepo.dart';
+import 'package:qawafel/ui/widgets/banners_widget.dart';
 import 'package:qawafel/ui/widgets/classified_ads.dart';
 
 import '../widgets/product.dart';
@@ -30,6 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
   TopBrandBloc topBrandBloc;
   ProductBloc productBloc;
   ClassifiedAdsBloc classifiedAdsBloc;
+  BannersBloc bannersBloc;
 
   bool selected = true;
   @override
@@ -38,10 +42,12 @@ class _HomeScreenState extends State<HomeScreen> {
     topBrandBloc = BlocProvider.of<TopBrandBloc>(context);
     productBloc = BlocProvider.of<ProductBloc>(context);
     classifiedAdsBloc=BlocProvider.of<ClassifiedAdsBloc>(context);
+    bannersBloc=BlocProvider.of<BannersBloc>(context);
     productBloc.add(FetchProducts());
     topcategoryBloc.add(FetchTopCategories());
     topBrandBloc.add(FetchTopBrands());
     classifiedAdsBloc.add(FetchClassifiedProducts());
+    bannersBloc.add(FetchBanners());
 
     super.initState();
   }
@@ -52,6 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
     topBrandBloc.close();
     productBloc.close();
     classifiedAdsBloc.close();
+    bannersBloc.close();
     super.dispose();
   }
 
@@ -61,35 +68,11 @@ class _HomeScreenState extends State<HomeScreen> {
       child: ListView(
         shrinkWrap: true,
         children: [
-          
           SizedBox(
             height: ScreenUtil().setHeight(30),
           ),
-
-
           Container(
-            child: FutureBuilder(
-              future: ProductRepo().getBanners(),
-              builder: (context, bannerSnap) {
-                if (bannerSnap.connectionState == ConnectionState.done) {
-                  if (bannerSnap.data == null) {
-                    return Text('no data');
-                  } else {
-                    return  CarouselSlider.builder(options: CarouselOptions(initialPage: 1,autoPlay: true, aspectRatio: 2.0,
-                      enlargeCenterPage: true,),
-                      itemCount: bannerSnap.data.length,
-                      itemBuilder: (context, itemIndex,real) =>
-                          ClipRRect(borderRadius: BorderRadius.circular(ScreenUtil().setWidth(30)),
-                            child: Image.network(mediaUrl+bannerSnap.data[itemIndex]),
-                          ),
-                    );
-                  }
-                }  else {
-                  return Center(child: CircularProgressIndicator()); // loading
-                }
-              },
-
-            ),
+            child: BannersWidget()
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

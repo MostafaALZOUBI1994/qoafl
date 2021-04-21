@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/screenutil_init.dart';
 import 'package:qawafel/bloc/AllCategory_bloc/all_category_bloc.dart';
+import 'package:qawafel/bloc/banners_bloc/basnners_bloc.dart';
+import 'package:qawafel/bloc/banners_bloc/basnners_state.dart';
 import 'package:qawafel/bloc/classifiedAds_bloc/classifiedAds_bloc.dart';
 import 'package:qawafel/bloc/classifiedAds_bloc/classifiedAds_state.dart';
 
@@ -47,6 +49,8 @@ Future<void> main() async {
           create: (BuildContext context) => QuantityBloc()),
       BlocProvider<ClassifiedAdsBloc>(
           create: (BuildContext context) => ClassifiedAdsBloc(ClassifiedProductInitial(), ProductRepo())),
+      BlocProvider<BannersBloc>(
+          create: (BuildContext context) => BannersBloc(BannersInitial(), ProductRepo())),
 
 
     ],
