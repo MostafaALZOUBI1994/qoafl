@@ -1,4 +1,5 @@
 import 'package:qawafel/models/brand.dart';
+import 'package:qawafel/models/seller.dart';
 import 'package:qawafel/models/user.dart';
 import 'category.dart';
 
@@ -6,7 +7,7 @@ class Product {
   int id;
   String name;
   String addedBy;
-  // User user;
+  Seller seller;
   Category category;
   Brand brand;
   List<dynamic> photos;
@@ -84,7 +85,7 @@ class Product {
     id = json['id'];
     name = json['name'];
     addedBy = json['added_by'];
-    //  user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    seller = json['user'] != null ? new Seller.fromJson(json['user']) : null;
     category = json['category'] != null
         ? new Category.fromJson(json['category'])
         : null;

@@ -517,8 +517,8 @@ class _ProductDetailState extends State<ProductDetail> {
                             text: new TextSpan(
                               // text: 'This item costs ',
                               children: <TextSpan>[
-                                new TextSpan(
-                                  text: '\$' +
+                            new TextSpan(
+                                  text:widget.product.priceHigher==widget.product.priceLower    ?"": '\$' +
                                       widget.product.priceHigher.toString(),
                                   style: new TextStyle(
                                     color: Colors.black,
@@ -566,7 +566,7 @@ class _ProductDetailState extends State<ProductDetail> {
                           SizedBox(
                             width: ScreenUtil().setWidth(14),
                           ),
-                          Text("Inhouse product"),
+                          Text(widget.product.seller.name),
                         ],
                       ),
                       SizedBox(
@@ -693,41 +693,7 @@ class _ProductDetailState extends State<ProductDetail> {
                           ),
                           child: Row(
                             children: [
-                              InkWell(
-                                onTap: () {},
-                                child: Container(
-                                  width: ScreenUtil().setWidth(87),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(23.0),
-                                    color: Color(0xfff16a29),
-                                    border: Border.all(
-                                        width: 1.0,
-                                        color: const Color(0xffe2e5ec)),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 8.0),
-                                    child: Center(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          SvgPicture.asset("assets/buynow.svg"),
-                                          SizedBox(
-                                            width: 1,
-                                          ),
-                                          Text("Buy Now",
-                                              style: TextStyle(
-                                                  color: Colors.white)),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: ScreenUtil().setWidth(25),
-                              ),
+
                               inCart
                                   ? Container(
                                       width: ScreenUtil().setWidth(87),
@@ -837,7 +803,7 @@ class _ProductDetailState extends State<ProductDetail> {
                               SizedBox(
                                 width: ScreenUtil().setWidth(25),
                               ),
-                              Icon(Icons.cached, color: grey),
+
                             ],
                           )),
                       SizedBox(
