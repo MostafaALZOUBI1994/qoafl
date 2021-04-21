@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/screen_util.dart';
 import 'package:like_button/like_button.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:qawafel/bloc/quantity_bloc/quantity_bloc.dart';
 import 'package:qawafel/bloc/quantity_bloc/quantity_event.dart';
 import 'package:qawafel/bloc/quantity_bloc/quantity_state.dart';
@@ -107,31 +108,49 @@ class _ProductDetailState extends State<ProductDetail> {
                     child: Row(
                       children: [
                         Expanded(
-                            child: Container(
-                          height: ScreenUtil().setHeight(185),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(9.0),
-                            gradient: RadialGradient(
-                              center: Alignment(0.0, 0.0),
-                              radius: 0.717,
-                              colors: [
-                                const Color(0xffffffff),
-                                const Color(0xfffecc0c)
-                              ],
-                              stops: [0.0, 1.0],
-                            ),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: CachedNetworkImage(
-                              imageUrl: mediaUrl +
-                                  widget.product.photos[selectedPhoto],
-                              placeholder: (context, url) => Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: CircularProgressIndicator(),
+                            child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => HeroPhotoViewRouteWrapper(
+                                  imageProvider: NetworkImage(
+                                    mediaUrl +
+                                        widget.product.photos[selectedPhoto] ,
+                                  ),
+                                ),
                               ),
-                              errorWidget: (context, url, error) =>
-                                  Icon(Icons.error),
+                            );
+                          },
+                          child: Container(
+                            height: ScreenUtil().setHeight(185),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(9.0),
+                              gradient: RadialGradient(
+                                center: Alignment(0.0, 0.0),
+                                radius: 0.717,
+                                colors: [
+                                  const Color(0xffffffff),
+                                  const Color(0xfffecc0c)
+                                ],
+                                stops: [0.0, 1.0],
+                              ),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Hero(
+                                tag: "zoom",
+                                child: CachedNetworkImage(
+                                  imageUrl: mediaUrl +
+                                      widget.product.photos[selectedPhoto],
+                                  placeholder: (context, url) => Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                  errorWidget: (context, url, error) =>
+                                      Icon(Icons.error),
+                                ),
+                              ),
                             ),
                           ),
                         )),
@@ -517,9 +536,12 @@ class _ProductDetailState extends State<ProductDetail> {
                             text: new TextSpan(
                               // text: 'This item costs ',
                               children: <TextSpan>[
-                            new TextSpan(
-                                  text:widget.product.priceHigher==widget.product.priceLower    ?"": '\$' +
-                                      widget.product.priceHigher.toString(),
+                                new TextSpan(
+                                  text: widget.product.priceHigher ==
+                                          widget.product.priceLower
+                                      ? ""
+                                      : '\$' +
+                                          widget.product.priceHigher.toString(),
                                   style: new TextStyle(
                                     color: Colors.black,
                                     decoration: TextDecoration.lineThrough,
@@ -693,7 +715,6 @@ class _ProductDetailState extends State<ProductDetail> {
                           ),
                           child: Row(
                             children: [
-
                               inCart
                                   ? Container(
                                       width: ScreenUtil().setWidth(87),
@@ -740,7 +761,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                         showSnackBar(context,
                                             "The Product added to cart");
                                         setState(() {
-                                          inCart=true;
+                                          inCart = true;
                                         });
                                       },
                                       child: Container(
@@ -783,7 +804,8 @@ class _ProductDetailState extends State<ProductDetail> {
                                   onTap: (nothing) async {
                                     if (isLiked) {
                                       await ProductRepo().removeFromWishList(
-                                          widget.product.isExistInWishList[0]["id"]);
+                                          widget.product.isExistInWishList[0]
+                                              ["id"]);
                                       showSnackBar(context,
                                           "The Product removed from Favourites");
                                     } else {
@@ -803,7 +825,6 @@ class _ProductDetailState extends State<ProductDetail> {
                               SizedBox(
                                 width: ScreenUtil().setWidth(25),
                               ),
-
                             ],
                           )),
                       SizedBox(
@@ -895,7 +916,7 @@ class _ProductDetailState extends State<ProductDetail> {
         break;
       case 2:
         return Container(
-            width: 300, height: 300, key: UniqueKey(), child: VideoWidget());
+            width: ScreenUtil().setWidth(300), height: ScreenUtil().setHeight(240), key: UniqueKey(), child: VideoWidget(link: widget.product.video,));
         break;
       case 3:
         return Container(
@@ -905,5 +926,35 @@ class _ProductDetailState extends State<ProductDetail> {
             ));
         break;
     }
+  }
+}
+
+class HeroPhotoViewRouteWrapper extends StatelessWidget {
+  const HeroPhotoViewRouteWrapper({
+    @required this.imageProvider,
+    this.backgroundDecoration,
+    this.minScale,
+    this.maxScale,
+  });
+
+  final ImageProvider imageProvider;
+  final BoxDecoration backgroundDecoration;
+  final dynamic minScale;
+  final dynamic maxScale;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      constraints: BoxConstraints.expand(
+        height: MediaQuery.of(context).size.height,
+      ),
+      child: PhotoView(
+        imageProvider: imageProvider,
+        backgroundDecoration: backgroundDecoration,
+        minScale: minScale,
+        maxScale: maxScale,
+        heroAttributes: const PhotoViewHeroAttributes(tag: "zoom"),
+      ),
+    );
   }
 }

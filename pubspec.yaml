@@ -54,6 +54,7 @@ dependencies:
   flutter_animated_dialog:
   carousel_slider:
   webview_flutter:
+  photo_view:
 
 
 
