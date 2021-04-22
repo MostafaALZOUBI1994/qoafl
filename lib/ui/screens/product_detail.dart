@@ -757,7 +757,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                         await ProductRepo().addToCart(
                                             kUser.userId,
                                             widget.product.id,
-                                            variant);
+                                            variant,BlocProvider.of<QuantityBloc>(context).state.quantity,);
                                         showSnackBar(context,
                                             "The Product added to cart");
                                         setState(() {

@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/screenutil_init.dart';
@@ -65,7 +66,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: Size(375, 813),
-      allowFontScaling: false,
+      allowFontScaling: true,
       builder: () => MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
