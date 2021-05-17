@@ -53,7 +53,7 @@ class ProductRepo {
     String fileName = basename(voice);
     FormData formData = new FormData.fromMap({
       "file": await MultipartFile.fromFile(voice, filename: fileName),
-      "rate": 44100,
+      "rate": 32000,
       "language": "ar-SY"
     });
 
@@ -279,7 +279,7 @@ class ProductRepo {
 
   Future addToCart(int userId, int productId,var variant,int quantity) async {
     try {
-      response = await dio.get(baseUrl + "/carts/add",queryParameters: {
+      response = await dio.post(baseUrl + "/carts/add",data: {
         "id": productId,
         "user_id": userId,
         "variant": variant,

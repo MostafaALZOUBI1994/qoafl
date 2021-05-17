@@ -153,7 +153,7 @@ class _Signup_SigninScreenState extends State<Signup_SigninScreen> {
                                 padding: EdgeInsets.symmetric(
                                     horizontal: ScreenUtil().setWidth(11)),
                                 child: TextFieldWidget(
-                                  passfieled: false,
+                                  passfield: false,
                                   controller: emailUserNameController,
                                 ),
                               ),
@@ -180,7 +180,7 @@ class _Signup_SigninScreenState extends State<Signup_SigninScreen> {
                               Padding(
                                 padding: EdgeInsets.symmetric(
                                     horizontal: ScreenUtil().setWidth(11)),
-                                child: TextFieldWidget(passfieled: true,
+                                child: TextFieldWidget(passfield: true,
                                   controller: passwordController,
                                 ),
                               ),
@@ -299,7 +299,7 @@ class _Signup_SigninScreenState extends State<Signup_SigninScreen> {
                                           horizontal:
                                               ScreenUtil().setWidth(11)),
                                       child: TextFieldWidget(
-                                        passfieled: false,
+                                        passfield: false,
                                         controller: emailController,
                                       ),
                                     ),
@@ -329,7 +329,7 @@ class _Signup_SigninScreenState extends State<Signup_SigninScreen> {
                                           horizontal:
                                               ScreenUtil().setWidth(11)),
                                       child: TextFieldWidget(
-                                        passfieled: false,
+                                        passfield: false,
                                         controller: nameController,
                                       ),
                                     ),
@@ -358,7 +358,7 @@ class _Signup_SigninScreenState extends State<Signup_SigninScreen> {
                                       padding: EdgeInsets.symmetric(
                                           horizontal:
                                               ScreenUtil().setWidth(11)),
-                                      child: TextFieldWidget(passfieled: true,
+                                      child: TextFieldWidget(passfield: true,
                                         controller: registerPasswordController,
                                       ),
                                     ),
@@ -387,7 +387,7 @@ class _Signup_SigninScreenState extends State<Signup_SigninScreen> {
                                       padding: EdgeInsets.symmetric(
                                           horizontal:
                                               ScreenUtil().setWidth(11)),
-                                      child: TextFieldWidget(passfieled: true,
+                                      child: TextFieldWidget(passfield: true,
                                         controller: passwordConfirmController,
                                       ),
                                     ),
@@ -710,7 +710,7 @@ class _Signup_SigninScreenState extends State<Signup_SigninScreen> {
                                                   horizontal: ScreenUtil()
                                                       .setWidth(20)),
                                               child: TextFieldWidget(
-                                                passfieled: false,
+                                                passfield: false,
                                                 hint: "Card Number",
                                               ),
                                             ),
@@ -723,7 +723,7 @@ class _Signup_SigninScreenState extends State<Signup_SigninScreen> {
                                                   horizontal: ScreenUtil()
                                                       .setWidth(20)),
                                               child: TextFieldWidget(
-                                                passfieled: false,
+                                                passfield: false,
                                                 hint: "your name on the card",
                                               ),
                                             ),
@@ -736,7 +736,7 @@ class _Signup_SigninScreenState extends State<Signup_SigninScreen> {
                                                   ),
                                                   Expanded(
                                                       child: TextFieldWidget(
-                                                        passfieled: false,
+                                                        passfield: false,
                                                     hint: "Security code",
                                                   )),
                                                   SizedBox(
@@ -750,7 +750,7 @@ class _Signup_SigninScreenState extends State<Signup_SigninScreen> {
                                                   ),
                                                   Expanded(
                                                     child: TextFieldWidget(
-                                                      passfieled: false, hint: "Month",
+                                                      passfield: false, hint: "Month",
                                                     ),
                                                   ),
                                                   SizedBox(
@@ -759,7 +759,7 @@ class _Signup_SigninScreenState extends State<Signup_SigninScreen> {
                                                   ),
                                                   Expanded(
                                                     child: TextFieldWidget(
-                                                      passfieled: false,      hint: "Year",
+                                                      passfield: false,      hint: "Year",
                                                     ),
                                                   ),
                                                   SizedBox(

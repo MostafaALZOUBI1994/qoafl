@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:qawafel/constants.dart';
 import 'package:qawafel/models/address.dart';
+import 'package:qawafel/models/country.dart';
 import 'package:qawafel/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../ui/widgets/snakbar.dart';
@@ -158,6 +159,8 @@ class UserRepo {
     }
   }
 
+
+
   Future<String> inVoice(int userId) async {
     try {
       response = await dio.get(baseUrl + "/payments/invoice/$userId");
@@ -167,5 +170,41 @@ class UserRepo {
     } catch (ex) {
       print("inVoice  " + ex.toString());
     }
+  }
+
+
+  Future<List<Country>> getCountries(String accessToken) async {
+    List<Country> countries = [];
+    var customHeaders = {
+      'Authorization': 'Bearer $accessToken'
+      // other headers
+    };
+    response = await dio.get(baseUrl + "/countries",
+        options: Options(headers: customHeaders,));
+    if (response.statusCode == 200) {
+      var res=response.data;
+      print(res["data"]);
+      response.data["data"]["Countries"]["Country"]
+          .map((country) => countries.add(Country.fromJson(country)))
+          .toList();
+    }
+
+    return countries;
+  }
+
+  Future<List<String>> getCities(String accessToken,String countryCode) async {
+    List<String> cities = [];
+    var customHeaders = {
+      'Authorization': 'Bearer $accessToken'
+      // other headers
+    };
+    response = await dio.get(baseUrl + "/cities/"+countryCode,
+        options: Options(headers: customHeaders));
+    if (response.statusCode == 200) {
+      response.data["data"]["Cities"]["string"]
+          .map((city) => cities.add(city))
+          .toList();
+    }
+    return cities;
   }
 }

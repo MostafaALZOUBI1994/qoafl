@@ -8,6 +8,8 @@ import 'package:qawafel/repository/userRepo.dart';
 import 'package:qawafel/ui/widgets/textfield.dart';
 
 import '../../constants.dart';
+import '../../constants.dart';
+import '../../repository/userRepo.dart';
 
 class Address extends StatefulWidget {
   final TabController controller;
@@ -67,6 +69,9 @@ class _AddressState extends State<Address> with SingleTickerProviderStateMixin {
                                 horizontal: ScreenUtil().setWidth(13)),
                             child: Column(
                               children: [
+
+                                //old code to deleted
+                                /*
                                 SizedBox(
                                   height: ScreenUtil().setHeight(13),
                                 ),
@@ -77,40 +82,60 @@ class _AddressState extends State<Address> with SingleTickerProviderStateMixin {
                                   height: ScreenUtil().setHeight(20),
                                 ),
                                 TextFieldWidget(controller: addressController,
-                                  passfieled: false,
+                                  passfield: false,
                                   hint: "Address",
                                 ),
                                 SizedBox(
                                   height: ScreenUtil().setHeight(13),
                                 ),
                                 TextFieldWidget(controller: postalCodeController,
-                                  passfieled: false,
+                                  passfield: false,
                                   hint: "Postal code",
                                 ),
                                 SizedBox(
                                   height: ScreenUtil().setHeight(13),
                                 ),
                                 TextFieldWidget(controller: cityController,
-                                  passfieled: false,
+                                  passfield: false,
                                   hint: "City",
                                 ),
                                 SizedBox(
                                   height: ScreenUtil().setHeight(13),
                                 ),
                                 TextFieldWidget(controller: countryController,
-                                  passfieled: false,
+                                  passfield: false,
                                   hint: "Country",
                                 ),
                                 SizedBox(
                                   height: ScreenUtil().setHeight(13),
                                 ),
                                 TextFieldWidget(controller: phoneController,
-                                  passfieled: false,
+                                  passfield: false,
                                   hint: "Phone",
                                 ),
                                 SizedBox(
                                   height: ScreenUtil().setHeight(20),
                                 ),
+
+                                */
+
+                                FutureBuilder(future: UserRepo(context).getCountries(kUser.accessToken),builder: (context, countrySnap) {
+                                  if (countrySnap.connectionState == ConnectionState.done) {
+                                    if (countrySnap.data == null) {
+                                      return Text('no data');
+                                    } else {
+                                      return DropdownButton(items: countrySnap.data.map((country)=>
+                                          DropdownMenuItem<String>(
+                                            child: Text(country.name),
+                                            value: country.name,
+                                          )
+                                      ).toList
+                                      );
+                                    }
+                                  } else {
+                                    return Center(child: CircularProgressIndicator()); // loading
+                                  }
+                                },),
                                 buttonWidget(
                                     "Add Address", Theme.of(context).primaryColor,
                                         () async {
