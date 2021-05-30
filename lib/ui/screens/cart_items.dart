@@ -14,11 +14,6 @@ class CartItems extends StatefulWidget {
 
 class _CartItemsState extends State<CartItems> {
   @override
-  _CartItemsState createState() => _CartItemsState();
-}
-
-class _CartItemsState extends State<CartItems> {
-  @override
   Widget build(BuildContext context) {
 
     return FutureBuilder(
