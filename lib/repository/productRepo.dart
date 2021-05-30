@@ -288,16 +288,17 @@ class ProductRepo {
     }
   }
 
-  Future addToCart(int userId, int productId,var variant) async {
+  Future addToCart(int userId, int productId,var variant,int quantity) async {
     try {
-      response = await dio.post(baseUrl + "/carts/add",
-          options: Options(headers: {"Authorization": 'Bearer $accessToken'}),
-          data: {
-            "id": productId,
-            "user_id": userId,
-            "variant": variant,
-            "color": ""
-          });
+      response = await dio.post(baseUrl + "/carts/add",data: {
+        "id": productId,
+        "user_id": userId,
+        "variant": variant,
+        "quantity":quantity,
+        "color": ""
+      },
+          options: Options(headers: {"Authorization": 'Bearer $accessToken'},),
+          );
 
       print(response.data.toString());
     } catch (ex) {
