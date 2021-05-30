@@ -1,5 +1,7 @@
 
 
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:qawafel/constants.dart';
@@ -7,6 +9,8 @@ import 'package:qawafel/models/address.dart';
 import 'package:qawafel/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../ui/widgets/snakbar.dart';
+import 'package:path/path.dart';
+import 'package:dio/dio.dart';
 
 class UserRepo {
   Response response;
@@ -65,6 +69,7 @@ class UserRepo {
       if (response.statusCode == 200) {
         user = User.fromJson(response.data);
         saveUser(user);
+        showSnackBar(context, "sign in success");
       }
     } catch (ex) {
       showSnackBar(context, "SignIn Failed");
@@ -167,5 +172,38 @@ class UserRepo {
     } catch (ex) {
       print("inVoice  " + ex.toString());
     }
+  }
+
+  uploadFileFromDio(File photoFile) async {
+    var dio = new Dio();
+    dio.options.baseUrl = baseUrl;
+
+    String fileName = basename(photoFile.path);
+    FormData formData = new FormData.fromMap({
+      "file": await MultipartFile.fromFile(photoFile.path, filename: fileName),
+      "user_id": kUser.userId
+    });
+    if (photoFile != null &&
+        photoFile.path != null &&
+        photoFile.path.isNotEmpty) {
+      // Create a FormData
+      String fileName = basename(photoFile.path);
+      print("File Name : $fileName");
+      print("File Size : ${photoFile.lengthSync()}");
+    }
+    String accessToken = kUser.accessToken;
+    var customHeaders = {
+      'Authorization': 'Bearer $accessToken'
+      // other headers
+    };
+    var response = await dio.post(baseUrl + '/user/image',
+        data: formData,
+        options: Options(
+            method: 'POST',
+            headers: customHeaders,
+            responseType: ResponseType.json // or ResponseType.JSON
+        ));
+    print("Response status: ${response.statusCode}");
+    print("Response data: ${response.data}");
   }
 }

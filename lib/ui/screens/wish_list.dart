@@ -40,7 +40,6 @@ class _WishListState extends State<WishList> {
                     children: List.generate(
                       productSnap.data.length,
                       (int index) {
-
                         return AnimationConfiguration.staggeredGrid(
                           position: index,
                           duration: const Duration(milliseconds: 500),

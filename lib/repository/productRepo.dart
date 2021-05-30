@@ -46,6 +46,8 @@ class ProductRepo {
   }
 
   Future<List<Product>> searchProductsByVoice(String voice) async {
+    try{
+      List<Product> fillteredProducts = [];
     dio.options.baseUrl = baseUrl;
     // dio.options.connectTimeout = 5000; //5s
     //dio.options.receiveTimeout = 5000;
@@ -53,7 +55,7 @@ class ProductRepo {
     String fileName = basename(voice);
     FormData formData = new FormData.fromMap({
       "file": await MultipartFile.fromFile(voice, filename: fileName),
-      "rate": 44100,
+      "rate": 32000,
       "language": "ar-SY"
     });
 
@@ -63,7 +65,16 @@ class ProductRepo {
             method: 'POST',
             responseType: ResponseType.json // or ResponseType.JSON
             ));
-    print(response.toString());
+      if (response.statusCode == 200) {
+
+       response.data
+            .map((product) => fillteredProducts.add(Product.fromJson(product)))
+            .toList();
+
+        return fillteredProducts;
+      }
+    print(response.toString());}
+    catch(ex){print("ssearch   "+ex.toString());}
   }
 
   Future<List<Product>> fetchAllProducts() async {

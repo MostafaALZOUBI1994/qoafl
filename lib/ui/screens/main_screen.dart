@@ -29,7 +29,7 @@ class _MainScreenState extends State<MainScreen>
 
   animationfunc(){
     setState(() {
-      topPosition=ScreenUtil().setHeight(10);
+      topPosition=ScreenUtil().setHeight(30);
       leftPosition=ScreenUtil().setWidth(10);
     });
     Future.delayed(Duration(milliseconds: 3500)).then((value) => {
@@ -65,7 +65,6 @@ class _MainScreenState extends State<MainScreen>
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-
                       Container(
                         child: Row(
                           children: [
@@ -84,7 +83,7 @@ class _MainScreenState extends State<MainScreen>
                                       });
                                     },
                                     child:CircleAvatar(
-                                      radius: 30.0,
+                                      radius: 20.0,
                                       backgroundImage: kUser==null || kUser.userInfo.avatar==null ? AssetImage("assets/user.png")
                                           :NetworkImage(mediaUrl+kUser.userInfo.avatar ,),
                                       backgroundColor: backColor,
@@ -136,14 +135,11 @@ class _MainScreenState extends State<MainScreen>
                             InkWell(
                               onTap: () async {
                                 action();
-
                               },
                               child:Container(child: Icon(MaterialIcons.account_circle),)
                             ),
                         openBuilder: (BuildContext c, VoidCallback action) =>
                          Signup_SigninScreen(),
-
-
                         tappable: false,
                       )
                    : new Tab(
@@ -170,7 +166,7 @@ class _MainScreenState extends State<MainScreen>
           ),
         ),
         AnimatedPositioned(top: topPosition,left: leftPosition,duration:Duration(milliseconds: 3500),
-            child: Container(height: 100,width: 100,child: Image.asset("assets/logoluncher.png"),)
+            child: Container(height: ScreenUtil().setHeight(70),width: ScreenUtil().setHeight(70),child: Image.asset("assets/logoluncher.png"),)
         ),
       ],
     );

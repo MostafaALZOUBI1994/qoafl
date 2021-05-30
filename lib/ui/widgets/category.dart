@@ -81,7 +81,7 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                             SizedBox(height: ScreenUtil().setHeight(10),),
                             Container(height: ScreenUtil().setHeight(50),child: Column(mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text(state.categories[index].name,textDirection: TextDirection.rtl,),
+                                Text(state.categories[index].name,overflow: TextOverflow.ellipsis,),
                               ],
                             )),
 

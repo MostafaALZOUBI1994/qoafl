@@ -7,6 +7,7 @@ import 'package:qawafel/repository/productRepo.dart';
 import 'package:qawafel/ui/screens/product_detail.dart';
 
 import '../../constants.dart';
+
 class ReltedProducts extends StatefulWidget {
   final Product product;
 
@@ -19,35 +20,46 @@ class _ReltedProductsState extends State<ReltedProducts> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding:  EdgeInsets.only(bottom:ScreenUtil().setHeight(200)),
+      padding: EdgeInsets.only(bottom: ScreenUtil().setHeight(200)),
       child: Container(
         child: FutureBuilder(
-          future: ProductRepo().fetchRelatedProducts(widget.product.id.toString()),
+          future:
+              ProductRepo().fetchRelatedProducts(widget.product.id.toString()),
           builder: (context, productSnap) {
             if (productSnap.connectionState == ConnectionState.done) {
               if (productSnap.data == null) {
                 return Text('no data');
               } else {
-                return  Container(height: ScreenUtil().setHeight(170),
-                  child: ListView.builder(scrollDirection: Axis.horizontal,shrinkWrap: true,
+                return Container(
+                  height: ScreenUtil().setHeight(170),
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
                     itemCount: productSnap.data.length,
                     itemBuilder: (context, index) {
                       Product product = productSnap.data[index];
                       return Padding(
                         padding: EdgeInsets.symmetric(
-                            horizontal: ScreenUtil().setWidth(10),vertical: ScreenUtil().setHeight(10)),
+                            horizontal: ScreenUtil().setWidth(10),
+                            vertical: ScreenUtil().setHeight(10)),
                         child: InkWell(
                           onTap: () async {
-                            Product relatedProduct= kUser==null?await ProductRepo().getProductDetails(product.id):await ProductRepo().getProductDetails(product.id,kUser.userId);
-
-                            Navigator.push (
+                            Product relatedProduct = kUser == null
+                                ? await ProductRepo()
+                                    .getProductDetails(product.id)
+                                : await ProductRepo().getProductDetails(
+                                    product.id, kUser.userId);
+                            Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => ProductDetail(product: relatedProduct,)),
+                              MaterialPageRoute(
+                                  builder: (context) => ProductDetail(
+                                        product: relatedProduct,
+                                      )),
                             );
                           },
                           child: Container(
                             width: ScreenUtil().setWidth(154),
-                          //  height: ScreenUtil().setHeight(22.0),
+                            //  height: ScreenUtil().setHeight(22.0),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(6.0),
                               color: const Color(0xffffffff),
@@ -67,13 +79,13 @@ class _ReltedProductsState extends State<ReltedProducts> {
                                   height: ScreenUtil().setHeight(5),
                                 ),
                                 Container(
-                                  height: ScreenUtil().setHeight(50),
+                                  height: ScreenUtil().setHeight(80),
                                   child: CachedNetworkImage(
-                                    imageUrl:
-                                    mediaUrl + product.thumbnailImage,
+                                    imageUrl: mediaUrl + product.thumbnailImage,
                                     placeholder: (context, url) => Padding(
                                       padding: const EdgeInsets.all(8.0),
-                                      child: Center(child: CircularProgressIndicator()),
+                                      child: Center(
+                                          child: CircularProgressIndicator()),
                                     ),
                                     errorWidget: (context, url, error) =>
                                         Icon(Icons.error),
@@ -82,24 +94,27 @@ class _ReltedProductsState extends State<ReltedProducts> {
                                 SizedBox(
                                   height: ScreenUtil().setHeight(5),
                                 ),
-
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                  child: Text(
-                                    product.name,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(fontSize: ScreenUtil().setSp(14)),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: Container(width: 100,
+                                    child: Text(
+                                      product.name,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          fontSize: ScreenUtil().setSp(14)),
+                                    ),
                                   ),
                                 ),
                                 SizedBox(
                                   height: ScreenUtil().setHeight(5),
                                 ),
-
                                 Row(
                                   children: [
                                     SizedBox(
                                       width: ScreenUtil().setWidth(8),
                                     ),
+                                    /*
                                     RatingBarIndicator(
                                       rating: product.rating.toDouble(),
                                       itemBuilder: (context, index) => Icon(
@@ -110,12 +125,13 @@ class _ReltedProductsState extends State<ReltedProducts> {
                                       itemSize: ScreenUtil().setWidth(10),
                                       direction: Axis.horizontal,
                                     ),
+                                    */
                                   ],
                                 ),
                                 SizedBox(
                                   height: ScreenUtil().setHeight(5),
                                 ),
-                                Row(
+                                Row(mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     SizedBox(
                                       width: ScreenUtil().setWidth(8),
@@ -124,7 +140,8 @@ class _ReltedProductsState extends State<ReltedProducts> {
                                       product.basePrice.toString(),
                                       style: TextStyle(
                                           fontSize: ScreenUtil().setSp(14),
-                                          color: Theme.of(context).primaryColor),
+                                          color:
+                                              Theme.of(context).primaryColor),
                                     )
                                   ],
                                 ),
@@ -133,18 +150,14 @@ class _ReltedProductsState extends State<ReltedProducts> {
                           ),
                         ),
                       );
-
                     },
                   ),
                 );
               }
-            }  else {
+            } else {
               return Center(child: CircularProgressIndicator()); // loading
             }
-
-
           },
-
         ),
       ),
     );

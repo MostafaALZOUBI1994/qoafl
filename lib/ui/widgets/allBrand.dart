@@ -78,7 +78,7 @@ class _AllBrandWidgetState extends State<AllBrandWidget> {
                           SizedBox(height: ScreenUtil().setHeight(10),),
                           Container(height: ScreenUtil().setHeight(30),child: Column(mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(state.brands[index].name,textDirection: TextDirection.rtl,),
+                              Text(state.brands[index].name,overflow: TextOverflow.ellipsis,),
                             ],
                           ))
                         ],

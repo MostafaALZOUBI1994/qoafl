@@ -31,10 +31,11 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   File _image;
   final picker = ImagePicker();
-  List<Product> searchedProducts=[];
+  List<Product> searchedProducts;
   String statusText = "";
   bool isComplete = false;
   bool isRecording=false;
+  bool isLoading=false;
 TextEditingController searchController;
   final String _mPath = '/data/user/0/com.example.qawafel/cache/flutter_sound_example.aac';
   @override
@@ -61,9 +62,13 @@ TextEditingController searchController;
                     color: backColor, borderRadius: BorderRadius.circular(300)
                 ),
                 child: TextField(controller: searchController,onChanged: (searchText){
+                  setState(() {
+                    isLoading=true;
+                  });
                   ProductRepo().searchProductsByText(searchText).then((value) {
                     setState(() {
                       searchedProducts=value;
+                        isLoading=false;
                     });
                   });
                 },
@@ -75,12 +80,17 @@ TextEditingController searchController;
                 GestureDetector(onTapDown: (value){startRecord();
                 setState(() {
                   isRecording=true;
+                  isLoading=true;
                 });
                 } ,onTapCancel: (){stopRecord();
-                ProductRepo().searchProductsByVoice(recordFilePath);
-                setState(() {
-                  isRecording=false;
+                ProductRepo().searchProductsByVoice(recordFilePath).then((value) {
+                  setState(() {
+                    isRecording=false;
+                    isLoading=false;
+                   value==null?searchedProducts=[]: searchedProducts=value;
+                  });
                 });
+
                 },
                   child: IconButton(onPressed: (){
                   },
@@ -91,8 +101,11 @@ TextEditingController searchController;
                 ),
                 SizedBox(width: 27,),
                 IconButton(onPressed: () async {
+                  setState(() {
+                    isLoading=true;
+                    searchedProducts=[];
+                  });
                   final imageFile = await picker.getImage(source: ImageSource.camera);
-
                   setState(() {
                     if (imageFile != null) {
                       _image = File(imageFile.path);
@@ -100,16 +113,24 @@ TextEditingController searchController;
                       print('No image selected.');
                     }
                   });
-                  uploadFileFromDio(_image);},
+                  uploadFileFromDio(_image);
+                  setState(() {
+                    isLoading=false;
+                  });
+                  },
+
                   icon: Icon(Icons.camera_alt, color: Theme
                       .of(context)
                       .primaryColor,),
+
                 ),
                 SizedBox(width: 13,)
               ],),
           body: Stack(
             children: [
-              searchedProducts.isEmpty? Center(child: Image.asset("assets/search.png")) :Container(
+              searchedProducts==null? Center(child: Image.asset("assets/search.png")) :searchedProducts.isEmpty? Center(
+                child: Text("no results"),
+              ) :Container(
         child:  Padding(
               padding: const EdgeInsets.only(top:8.0),
               child: AnimationLimiter(
@@ -232,8 +253,8 @@ TextEditingController searchController;
               ),
 
               ),
-        )),
-
+        )) ,
+isLoading?Center(child: CircularProgressIndicator()) :Container()
             ],
           ),
         ),
@@ -313,7 +334,7 @@ TextEditingController searchController;
     }
     return sdPath + "/test_${i++}.mp3";
   }
-  uploadFileFromDio(File photoFile) async {
+   uploadFileFromDio(File photoFile) async {
     var dio = new Dio();
     dio.options.baseUrl = baseUrl;
     String fileName = basename(photoFile.path);
@@ -321,22 +342,31 @@ TextEditingController searchController;
       "file":await MultipartFile.fromFile(photoFile.path,filename: fileName)
     });
     if (photoFile != null &&
-    photoFile.path != null &&
-    photoFile.path.isNotEmpty) {
-    // Create a FormData
-    String fileName = basename(photoFile.path);
-    print("File Name : $fileName");
-    print("File Size : ${photoFile.lengthSync()}");
+        photoFile.path != null &&
+        photoFile.path.isNotEmpty) {
+      // Create a FormData
+      String fileName = basename(photoFile.path);
+      print("File Name : $fileName");
+      print("File Size : ${photoFile.lengthSync()}");
 
     }
     var response = await dio.post(baseUrl+'/products/searchImage',
-    data: formData,
-    options: Options(
-    method: 'POST',
-    responseType: ResponseType.json // or ResponseType.JSON
-    ));
+        data: formData,
+        options: Options(
+            method: 'POST',
+            responseType: ResponseType.json // or ResponseType.JSON
+        ));
 
     print("Response status: ${response.statusCode}");
     print("Response data: ${response.data}");
+    searchedProducts.clear();
+    if (response.statusCode == 200) {
+      response.data["data"]
+          .map((product) => searchedProducts.add(Product.fromJson(product)))
+          .toList();
+    }
+    setState(() {
+
+    });
   }
 }
